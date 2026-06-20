@@ -7,22 +7,27 @@ struct ItemCategoryPickerView: View {
     @Environment(\.modelContext) private var modelContext
 
     var availableCategories: [ItemCategory] {
-        allCategories.filter { !item.categories.contains($0) }
+        allCategories.filter { !categories.contains($0) }
+    }
+
+    var categories: [ItemCategory] {
+        get { item.categories ?? [] }
+        set { item.categories = newValue }
     }
 
     var body: some View {
         Section("Categories") {
-            if item.categories.isEmpty && allCategories.isEmpty {
+            if categories.isEmpty && allCategories.isEmpty {
                 Text("No categories yet.")
                     .foregroundStyle(.secondary)
             }
 
-            ForEach(item.categories, id: \.persistentModelID) { cat in
+            ForEach(categories, id: \.persistentModelID) { cat in
                 HStack {
                     Text(cat.name)
                     Spacer()
                     Button(role: .destructive) {
-                        item.categories.removeAll { $0 == cat }
+                        item.categories = (item.categories ?? []).filter { $0 != cat }
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundStyle(.red)
@@ -32,7 +37,9 @@ struct ItemCategoryPickerView: View {
 
             ForEach(availableCategories, id: \.persistentModelID) { cat in
                 Button("+ \(cat.name)") {
-                    item.categories.append(cat)
+                    var current = item.categories ?? []
+                    current.append(cat)
+                    item.categories = current
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.blue)
@@ -44,7 +51,9 @@ struct ItemCategoryPickerView: View {
                     if !newValue.trimmingCharacters(in: .whitespaces).isEmpty {
                         let newCat = ItemCategory(name: newValue.trimmingCharacters(in: .whitespaces))
                         modelContext.insert(newCat)
-                        item.categories.append(newCat)
+                        var current = item.categories ?? []
+                        current.append(newCat)
+                        item.categories = current
                     }
                 }
             ))

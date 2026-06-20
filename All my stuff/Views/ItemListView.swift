@@ -50,7 +50,7 @@ struct ItemListView: View {
                 } else {
                     ForEach(categories, id: \.persistentModelID) { cat in
                         Section(cat.name) {
-                            let categoryItems = filteredItems.filter { $0.categories.contains(cat) }.sorted { $0.name < $1.name }
+                            let categoryItems = filteredItems.filter { ($0.categories ?? []).contains(cat) }.sorted { $0.name < $1.name }
                             ForEach(categoryItems, id: \.persistentModelID) { item in
                                 ItemRowView(item: item, onTap: { selectedItem = item })
                             }
@@ -67,7 +67,7 @@ struct ItemListView: View {
                 } else {
                     ForEach(locations, id: \.persistentModelID) { loc in
                         Section(loc.name) {
-                            let locationItems = filteredItems.filter { $0.locations.contains(loc) }.sorted { $0.name < $1.name }
+                            let locationItems = filteredItems.filter { ($0.locations ?? []).contains(loc) }.sorted { $0.name < $1.name }
                             ForEach(locationItems, id: \.persistentModelID) { item in
                                 ItemRowView(item: item, onTap: { selectedItem = item })
                             }
@@ -106,7 +106,7 @@ struct ItemListView: View {
     private func getUniqueCategories() -> [ItemCategory] {
         var set = Set<ItemCategory>()
         for item in filteredItems {
-            for cat in item.categories {
+            for cat in item.categories ?? [] {
                 set.insert(cat)
             }
         }
@@ -116,7 +116,7 @@ struct ItemListView: View {
     private func getUniqueLocations() -> [ItemLocation] {
         var set = Set<ItemLocation>()
         for item in filteredItems {
-            for loc in item.locations {
+            for loc in item.locations ?? [] {
                 set.insert(loc)
             }
         }

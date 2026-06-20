@@ -7,9 +7,9 @@ import SwiftData
 
 @Model
 final class ItemLocation {
-    var name: String
+    var name: String = ""
     @Relationship(deleteRule: .nullify)
-    var items: [Item] = []
+    var items: [Item]?
 
     init(name: String) {
         self.name = name

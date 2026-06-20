@@ -50,18 +50,16 @@ struct DataModelTests {
         let laptop = Item(name: "Laptop", datePurchased: Date())
         let electronics = ItemCategory(name: "Electronics")
         let work = ItemCategory(name: "Work")
-        laptop.categories.append(electronics)
-        laptop.categories.append(work)
-        #expect(laptop.categories.count == 2)
+        laptop.categories = [electronics, work]
+        #expect(laptop.categories?.count == 2)
     }
 
     @Test func item_linksToManyLocations() async throws {
         let phone = Item(name: "Phone", datePurchased: Date())
         let office = ItemLocation(name: "Office")
         let home = ItemLocation(name: "Home")
-        phone.locations.append(office)
-        phone.locations.append(home)
-        #expect(phone.locations.count == 2)
+        phone.locations = [office, home]
+        #expect(phone.locations?.count == 2)
     }
 
     @Test func priceState_confirmedValue() async throws {

@@ -7,9 +7,10 @@ import SwiftData
 
 @Model
 final class ItemCategory {
-    var name: String
+    var id: UUID?
+    var name: String = ""
     @Relationship(deleteRule: .nullify)
-    var items: [Item] = []
+    var items: [Item]?
 
     init(name: String) {
         self.name = name

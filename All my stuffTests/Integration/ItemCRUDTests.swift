@@ -12,7 +12,7 @@ struct ItemCRUDTests {
         let container = try ModelContainer(for: schema, configurations: [config])
         let context = ModelContext(container)
 
-        let item = Item(name: "Camera", datePurchased: Date())
+        let item = Item(name: "Camera")
         context.insert(item)
         #expect(try context.fetchCount(FetchDescriptor<Item>()) == 1)
 
@@ -39,9 +39,8 @@ struct ItemCRUDTests {
         context.insert(cat1)
         context.insert(cat2)
         context.insert(loc1)
-        item.categories.append(cat1)
-        item.categories.append(cat2)
-        item.locations.append(loc1)
+        item.categories = [cat1, cat2]
+        item.locations = [loc1]
 
         #expect(try context.fetchCount(FetchDescriptor<ItemCategory>()) == 2)
         #expect(try context.fetchCount(FetchDescriptor<ItemLocation>()) == 1)

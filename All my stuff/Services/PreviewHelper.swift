@@ -27,12 +27,12 @@ func seedListPreview() -> ModelContainer {
     let cat = ItemCategory(name: "Electronics")
     let loc = ItemLocation(name: "Desk")
 
+    laptop.categories = [cat]
+    laptop.locations = [loc]
     context.insert(laptop)
     context.insert(headphones)
     context.insert(cat)
     context.insert(loc)
-    laptop.categories.append(cat)
-    laptop.locations.append(loc)
 
     return container
 }
@@ -46,11 +46,11 @@ func makeItemDetailPreview() -> some View {
     let cat = ItemCategory(name: "Electronics")
     let loc = ItemLocation(name: "Desk")
 
+    item.categories = [cat]
+    item.locations = [loc]
     context.insert(item)
     context.insert(cat)
     context.insert(loc)
-    item.categories.append(cat)
-    item.locations.append(loc)
 
     return NavigationStack {
         ItemDetailView(item: item)
