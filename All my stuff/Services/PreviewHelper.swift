@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 func makePreviewContainer() -> (container: ModelContainer, context: ModelContext) {
-    let schema = Schema([Item.self, Category.self, Location.self])
+    let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
     let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: [config])
     let context = ModelContext(container)
@@ -24,8 +24,8 @@ func seedListPreview() -> ModelContainer {
 
     let laptop = mockItem(name: "Laptop", datePurchased: Date())
     let headphones = mockItem(name: "Headphones", datePurchased: nil)
-    let cat = Category(name: "Electronics")
-    let loc = Location(name: "Desk")
+    let cat = ItemCategory(name: "Electronics")
+    let loc = ItemLocation(name: "Desk")
 
     context.insert(laptop)
     context.insert(headphones)
@@ -43,8 +43,8 @@ func makeItemDetailPreview() -> some View {
 
     let item = Item(name: "Laptop", datePurchased: Date())
     item.notes = "2024 MacBook Pro"
-    let cat = Category(name: "Electronics")
-    let loc = Location(name: "Desk")
+    let cat = ItemCategory(name: "Electronics")
+    let loc = ItemLocation(name: "Desk")
 
     context.insert(item)
     context.insert(cat)

@@ -12,11 +12,11 @@ final class Item {
     var estimatedValue: PriceState?
     var datePurchased: Date?
 
-    @Relationship(deleteRule: .nullify, inverse: \Category.items)
-    var categories: [Category] = []
+    @Relationship(deleteRule: .nullify, inverse: \ItemCategory.items)
+    var categories: [ItemCategory] = []
 
-    @Relationship(deleteRule: .nullify, inverse: \Location.items)
-    var locations: [Location] = []
+    @Relationship(deleteRule: .nullify, inverse: \ItemLocation.items)
+    var locations: [ItemLocation] = []
 
     init(name: String, datePurchased: Date? = nil) {
         self.name = name

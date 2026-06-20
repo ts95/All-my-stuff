@@ -1,11 +1,12 @@
-//  Location.swift
+//  ItemLocation.swift
 //  All my stuff
 
+/// Renamed from `Location` to avoid ambiguity with Cocoa's built-in types in test targets.
 import Foundation
 import SwiftData
 
 @Model
-final class Location {
+final class ItemLocation {
     var name: String
     @Relationship(deleteRule: .nullify)
     var items: [Item] = []

@@ -5,6 +5,7 @@
 //  Created by Toni Sucic on 20/06/2026.
 //
 
+import Foundation
 import Testing
 import SwiftData
 @testable import All_my_stuff
@@ -12,7 +13,16 @@ import SwiftData
 @Suite("Data Model Tests")
 struct DataModelTests {
 
-    private var context: ModelContext! = ModelContext(.inMemory())
+    // ModelContext(.inMemory()) was removed in iOS 26 — use Schema + ModelConfiguration instead
+    private var container: ModelContainer!
+    private var context: ModelContext!
+
+    init() {
+        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        container = try! ModelContainer(for: schema, configurations: [config])
+        context = ModelContext(container)
+    }
 
     @Test func item_createsWithRequiredFields() async throws {
         let item = Item(name: "Laptop", datePurchased: Date())
@@ -23,21 +33,23 @@ struct DataModelTests {
     }
 
     @Test func category_createsWithName() async throws {
-        let cat = Category(name: "Electronics")
+        let cat = ItemCategory(name: "Electronics")
         context.insert(cat)
-        #expect(context.count(for: Category.self) == 1)
+        let fd = FetchDescriptor<ItemCategory>()
+        #expect(try context.fetchCount(fd) == 1)
     }
 
     @Test func location_createsWithName() async throws {
-        let loc = Location(name: "Office Desk")
+        let loc = ItemLocation(name: "Office Desk")
         context.insert(loc)
-        #expect(context.count(for: Location.self) == 1)
+        let fd = FetchDescriptor<ItemLocation>()
+        #expect(try context.fetchCount(fd) == 1)
     }
 
     @Test func item_linksToManyCategories() async throws {
         let laptop = Item(name: "Laptop", datePurchased: Date())
-        let electronics = Category(name: "Electronics")
-        let work = Category(name: "Work")
+        let electronics = ItemCategory(name: "Electronics")
+        let work = ItemCategory(name: "Work")
         laptop.categories.append(electronics)
         laptop.categories.append(work)
         #expect(laptop.categories.count == 2)
@@ -45,8 +57,8 @@ struct DataModelTests {
 
     @Test func item_linksToManyLocations() async throws {
         let phone = Item(name: "Phone", datePurchased: Date())
-        let office = Location(name: "Office")
-        let home = Location(name: "Home")
+        let office = ItemLocation(name: "Office")
+        let home = ItemLocation(name: "Home")
         phone.locations.append(office)
         phone.locations.append(home)
         #expect(phone.locations.count == 2)
