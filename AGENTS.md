@@ -1,10 +1,31 @@
 # AGENTS.md
 
+## Tooling: Prefer Xcode MCP
+
+**Always use the Xcode MCP tools** for any operation that touches the Xcode project. They understand the project structure, handle file references in `.pbxproj`, and provide accurate diagnostics. Generic tools (bash `grep`/`find`, filesystem `read`/`edit`) bypass Xcode's file indexing and can produce stale results or orphan files from the project.
+
+| Task | Use Xcode MCP | Not |
+|------|--------------|-----|
+| Browse project structure | `xcode_XcodeLS` / `xcode_XcodeGlob` | `ls` / `find` |
+| Read a source file | `xcode_XcodeRead` | `cat` / `read` |
+| Edit a source file | `xcode_XcodeUpdate` | `sed` / `edit` |
+| Create a new file | `xcode_XcodeWrite` | `echo >` / `write` |
+| Move / rename a file | `xcode_XcodeMV` | `git mv` / `mv` |
+| Delete a file | `xcode_XcodeRM` | `git rm` / `rm` |
+| Create a directory | `xcode_XcodeMakeDir` | `mkdir` |
+| Check compiler issues | `xcode_XcodeRefreshCodeIssuesInFile` | — |
+| Build the app | `xcode_BuildProject` | `xcodebuild` |
+| Run tests | `xcode_RunAllTests` / `xcode_RunSomeTests` | `xcodebuild build-for-testing` |
+| Get test list | `xcode_GetTestList` | — |
+| Render a SwiftUI preview | `xcode_RenderPreview` | — |
+
+Only fall back to generic tools when the Xcode MCP cannot express what you need (e.g., inspecting non-project files like `AGENTS.md`, running `git` commands, or reading build logs with `xcode_GetBuildLog`).
+
 ## Build & Test
 
-- **Build**: Open `All my stuff.xcodeproj` in Xcode and build with the active scheme
-- **Preview**: Use Xcode Canvas previews on any SwiftUI view file
-- **Run tests**: Use Xcode test runner (`Cmd+U`) for `All my stuffTests` target
+- **Build**: `xcode_BuildProject` on the active scheme
+- **Preview**: `xcode_RenderPreview` on any SwiftUI view file
+- **Run tests**: `xcode_RunAllTests` for the active scheme's test plan; `xcode_RunSomeTests` for targeted tests
 
 ## Conventions
 
