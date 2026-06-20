@@ -1,0 +1,48 @@
+# Packages
+.build/
+Packages
+Package.resolved
+
+# Source Control
+.svn/
+
+# Xcode
+build/
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*_build
+*.pyc
+*.pyo
+*.fw
+*.app
+*.dSYM.zip
+*.dSYM
+xcuserdata
+**/tabs.suite
+ xcscanbot*
+xccloudops
+
+# OS
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Xcode 11 broken testing log fixed in 11.2 beta 4
+RunDestination.plist
+
+# Fonts Xcode 12
+*/embedded.*
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Checkouts
+
+# Sparkle
+Payload/
+
+# Acoustic crash reporting
+Crashlytics Deploy API Key.txt
