@@ -21,6 +21,10 @@
 
 Only fall back to generic tools when the Xcode MCP cannot express what you need (e.g., inspecting non-project files like `AGENTS.md`, running `git` commands, or reading build logs with `xcode_GetBuildLog`).
 
+### Known Issues
+
+- **LSP errors are false positives**: Xcode's language server reports "Cannot find type" and "No such module" errors across all files. These do not affect the build — always verify with `xcode_BuildProject` before treating a diagnostic as real.
+
 ## Build & Test
 
 - **Build**: `xcode_BuildProject` on the active scheme
@@ -49,6 +53,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 4. **No orphaned model properties**: every model field must be surfaced in at least one view
 5. For Swift Package Manager types, SwiftData properties require a non-empty `description` parameter
 6. **Never use git worktrees** — the Xcode MCP can only operate on the repository where `.xcodeproj` lives; worktrees break file discovery and tool access. Work directly on feature branches instead.
+7. **SwiftData iOS 26 breaking changes**: `ModelContext(.inMemory())` removed — use `Schema` + `ModelConfiguration(isStoredInMemoryOnly: true)` instead; `context.insert()` is not variadic — call it once per object; `context.count(for:)` removed — use `try context.fetchCount(FetchDescriptor<T>())`
 
 ## Installed Skills
 
