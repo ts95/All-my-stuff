@@ -192,3 +192,17 @@ struct ItemFormSheet: View {
         }
     }
 }
+
+#Preview {
+    let (container, context) = makePreviewContainer()
+    let item = Item(name: "Tablet", datePurchased: Date())
+    context.insert(item)
+
+    return ItemFormSheet(
+        item: item,
+        isCreateMode: false,
+        onCancel: {},
+        onDone: {}
+    )
+    .modelContainer(container)
+}

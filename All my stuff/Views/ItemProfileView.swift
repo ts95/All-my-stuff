@@ -205,5 +205,8 @@ struct ItemProfileView: View {
             }
         }
     }
+}
 
+#Preview {
+    makeProfilePreview()
 }

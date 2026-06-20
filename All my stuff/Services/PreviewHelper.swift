@@ -38,22 +38,23 @@ func seedListPreview() -> ModelContainer {
 }
 
 @MainActor
-func makeItemDetailPreview() -> some View {
-    let (container, context) = makePreviewContainer()
+func makeProfilePreview() -> some View {
+    let container = seedListPreview()
 
-    let item = Item(name: "Laptop", datePurchased: Date())
-    item.notes = "2024 MacBook Pro"
-    let cat = ItemCategory(name: "Electronics")
-    let loc = ItemLocation(name: "Desk")
-
-    item.categories = [cat]
-    item.locations = [loc]
-    context.insert(item)
-    context.insert(cat)
-    context.insert(loc)
+    let fd = FetchDescriptor<Item>()
+    var ctx = ModelContext(container)
+    let item = (try? ctx.fetch(fd))?.first
 
     return NavigationStack {
-        ItemDetailView(item: item)
+        if let item {
+            ItemProfileView(
+                item: item,
+                onEdit: {},
+                onDelete: {}
+            )
+        } else {
+            Text("No items available")
+        }
     }
     .modelContainer(container)
 }
