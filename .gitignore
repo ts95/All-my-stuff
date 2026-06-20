@@ -46,3 +46,6 @@ Payload/
 
 # Acoustic crash reporting
 Crashlytics Deploy API Key.txt
+
+# SDD worktrees
+.worktrees/
