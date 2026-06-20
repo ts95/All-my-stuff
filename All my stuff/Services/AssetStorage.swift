@@ -25,3 +25,19 @@ struct AssetStorage {
         return Image(uiImage: uiImage)
     }
 }
+
+/// Overlay view that dims content during image processing.
+struct ProcessingOverlay<Content: View>: View {
+    let isProcessing: Bool
+    @ViewBuilder let content: () -> Content
+
+    var body: some View {
+        ZStack {
+            content()
+            if isProcessing {
+                Color.black.opacity(0.3)
+                    .overlay { ProgressView() }
+            }
+        }
+    }
+}
