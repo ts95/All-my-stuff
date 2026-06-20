@@ -27,7 +27,7 @@ struct AssetStorage {
 }
 
 /// Overlay view that dims content during image processing.
-struct ProcessingOverlay<Content: View>: View {
+struct ImageProcessingOverlay<Content: View>: View {
     let isProcessing: Bool
     @ViewBuilder let content: () -> Content
 

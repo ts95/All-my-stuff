@@ -42,37 +42,32 @@ struct ItemProfileView: View {
 
     private var photoSection: some View {
         Section {
-            ProcessingOverlay(isProcessing: isProcessingPhoto) {
-                if let image = previewImage ?? AssetStorage.imageDataToImage(item.photo) {
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 250)
-                        .clipped()
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                } else {
-                    VStack(spacing: 12) {
-                        Image(systemName: "photo")
-                            .font(.system(size: 48))
-                            .foregroundStyle(.secondary)
-                        Text("No photo")
-                            .foregroundStyle(.secondary)
-                            .font(.subheadline)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 200)
-                }
-            }
-
             PhotosPicker(
                 selection: $photoSelection,
                 matching: .images
             ) {
-                EmptyView()
+                ImageProcessingOverlay(isProcessing: isProcessingPhoto) {
+                    if let image = previewImage ?? AssetStorage.imageDataToImage(item.photo) {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 250)
+                            .clipped()
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        VStack(spacing: 12) {
+                            Image(systemName: "photo")
+                                .font(.system(size: 48))
+                                .foregroundStyle(.secondary)
+                            Text("No photo")
+                                .foregroundStyle(.secondary)
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 200)
+                    }
+                }
             }
-            .opacity(0)
-            .frame(width: 1, height: 1)
-            .accessibilityHidden(true)
             .onChange(of: photoSelection) { _, newValue in
                 Task {
                     isProcessingPhoto = true
