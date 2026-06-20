@@ -128,6 +128,7 @@ struct ItemRowView: View {
     let item: Item
     var onTap: () -> Void
     @Environment(\.modelContext) private var modelContext
+    @State private var showConfirmDelete = false
 
     var body: some View {
         Button {
@@ -160,10 +161,17 @@ struct ItemRowView: View {
         .buttonStyle(.plain)
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
-                modelContext.delete(item)
+                showConfirmDelete = true
             } label: {
                 Label("Delete", systemImage: "trash")
             }
+        }
+        .confirmationDialog("Delete \"\(item.name)\"?", isPresented: $showConfirmDelete) {
+            Button("Delete", role: .destructive) {
+                modelContext.delete(item)
+            }
+        } message: {
+            Text("This item will be permanently removed.")
         }
     }
 }
