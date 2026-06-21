@@ -12,7 +12,7 @@ I have lots of stuff — sometimes I forget what I have, where things are, or wh
 - **Categories** — group items by type (electronics, jewelry, collectibles, etc.)
 - **Locations** — track where items are stored; an item can be associated with multiple locations
 
-Each financial field (`purchasePrice`, `estimatedValue`) supports three states: confirmed, assumed, or unknown.
+Each financial field (`purchasePrice`, `estimatedValue`) is an optional `Double?` — `nil` means unset.
 
 ## Tech Stack
 
@@ -37,7 +37,7 @@ All my stuff/
 │   ├── Item.swift            // Core inventory item model
 │   ├── ItemCategory.swift    // Item category
 │   ├── ItemLocation.swift    // Storage location
-│   └── PriceState.swift      // Enum: .confirmed, .assumed, .unknown
+
 ├── Views/
 │   ├── ContentView.swift           // Split-view coordinator with sheet management
 │   ├── ItemListView.swift          // Main list with search, filter by category/location

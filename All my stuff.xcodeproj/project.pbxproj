@@ -29,9 +29,22 @@
 		29F269102FE71C4900D1CF7E /* All my stuffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "All my stuffUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		29543B9C2FE7CD92008B6FB8 /* Exceptions for "All my stuff" folder in "All my stuff" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"All-my-stuff-Info.plist",
+			);
+			target = 29F268F82FE71C4800D1CF7E /* All my stuff */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		29F268FB2FE71C4800D1CF7E /* All my stuff */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29543B9C2FE7CD92008B6FB8 /* Exceptions for "All my stuff" folder in "All my stuff" target */,
+			);
 			path = "All my stuff";
 			sourceTree = "<group>";
 		};
@@ -401,6 +414,7 @@
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "All-my-stuff-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures of your items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos of your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -436,6 +450,7 @@
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "All-my-stuff-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures of your items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos of your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

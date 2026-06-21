@@ -14,8 +14,8 @@ struct ItemProfileTests {
 
         let item = Item(name: "Laptop", datePurchased: Date())
         item.notes = "2024 MacBook Pro"
-        item.purchasePrice = .confirmed(1999.99)
-        item.estimatedValue = .assumed(1500)
+        item.purchasePrice = 1999.99
+        item.estimatedValue = 1500
         let cat = ItemCategory(name: "Electronics")
         let loc = ItemLocation(name: "Desk")
         item.categories = [cat]

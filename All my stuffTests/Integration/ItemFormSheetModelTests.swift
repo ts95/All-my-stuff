@@ -16,8 +16,8 @@ struct ItemFormSheetModelTests {
         let item = Item(name: "")
         item.name = "Camera"
         item.notes = "DSLR Camera Body"
-        item.purchasePrice = .confirmed(1200)
-        item.estimatedValue = .assumed(800)
+        item.purchasePrice = 1200
+        item.estimatedValue = 800
         item.datePurchased = Date()
         context.insert(item)
         try context.save()
@@ -39,7 +39,7 @@ struct ItemFormSheetModelTests {
 
         item.name = "Updated Name"
         item.notes = "Updated notes"
-        item.purchasePrice = .confirmed(500)
+        item.purchasePrice = 500
         try context.save()
 
         let fd = FetchDescriptor<Item>()

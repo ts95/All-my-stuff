@@ -54,6 +54,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 5. For Swift Package Manager types, SwiftData properties require a non-empty `description` parameter
 6. **Never use git worktrees** — the Xcode MCP can only operate on the repository where `.xcodeproj` lives; worktrees break file discovery and tool access. Work directly on feature branches instead.
 7. **SwiftData iOS 26 breaking changes**: `ModelContext(.inMemory())` removed — use `Schema` + `ModelConfiguration(isStoredInMemoryOnly: true)` instead; `context.insert()` is not variadic — call it once per object; `context.count(for:)` removed — use `try context.fetchCount(FetchDescriptor<T>())`
+8. **SwiftData does not support enums with associated values**: SwiftData's internal coder fails at runtime with "Unable to decode this value" for enums like `PriceState` that have associated values (e.g., `.confirmed(Double)`), even with a custom `Codable` implementation. Use primitive `Double?` properties instead of enums with associated values for SwiftData model properties.
 8. **Navigation**: Always use `NavigationStack` with `NavigationPath` + `.navigationDestination(for:)` for push navigation — never `NavigationLink(destination:)`. On iPhone, `NavigationSplitView` collapses to single-column, so the list must be wrapped in a `NavigationStack` with a bound `NavigationPath` to support detail view push navigation. Track selected item separately for the split-view detail column and sync it with the path.
 
 ## Documentation & Commit Workflow

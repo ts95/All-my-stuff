@@ -62,21 +62,27 @@ struct DataModelTests {
         #expect(phone.locations?.count == 2)
     }
 
-    @Test func priceState_confirmedValue() async throws {
-        let price = PriceState.confirmed(999.99)
-        #expect(price.displayValue == "999.99")
-        #expect(price.numericValue == 999.99)
+    @Test func item_price_fields_persist() async throws {
+        let item = Item(name: "Laptop", datePurchased: Date())
+        item.purchasePrice = 1999.99
+        item.estimatedValue = 1500
+        context.insert(item)
+        try context.save()
+
+        let fd = FetchDescriptor<Item>()
+        let results = try context.fetch(fd)
+        #expect(results[0].purchasePrice == 1999.99)
+        #expect(results[0].estimatedValue == 1500)
     }
 
-    @Test func priceState_assumedValue() async throws {
-        let price = PriceState.assumed(500)
-        #expect(price.displayValue == "500.00")
-        #expect(price.numericValue == 500)
-    }
+    @Test func item_nil_prices_default() async throws {
+        let item = Item(name: "Phone", datePurchased: Date())
+        context.insert(item)
+        try context.save()
 
-    @Test func priceState_unknown() async throws {
-        let price = PriceState.unknown
-        #expect(price.displayValue == "Unknown")
-        #expect(price.numericValue == nil)
+        let fd = FetchDescriptor<Item>()
+        let results = try context.fetch(fd)
+        #expect(results[0].purchasePrice == nil)
+        #expect(results[0].estimatedValue == nil)
     }
 }

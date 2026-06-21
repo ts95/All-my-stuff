@@ -17,7 +17,7 @@ struct ItemCRUDTests {
         #expect(try context.fetchCount(FetchDescriptor<Item>()) == 1)
 
         item.name = "DSLR Camera"
-        item.purchasePrice = .confirmed(1200)
+        item.purchasePrice = 1200
         #expect(try context.fetch(FetchDescriptor<Item>())[0].name == "DSLR Camera")
 
         context.delete(item)

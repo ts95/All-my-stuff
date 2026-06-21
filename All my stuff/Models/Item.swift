@@ -8,8 +8,8 @@ final class Item {
     var name: String = ""
     var notes: String = ""
     @Attribute(.externalStorage) var photo: Data?
-    var purchasePrice: PriceState?
-    var estimatedValue: PriceState?
+    var purchasePrice: Double?
+    var estimatedValue: Double?
     var datePurchased: Date?
 
     @Relationship(deleteRule: .nullify, inverse: \ItemCategory.items)

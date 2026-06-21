@@ -159,10 +159,8 @@ struct ItemFormSheet: View {
                 Text("Purchase Price")
                 Spacer()
                 TextField("0.00", value: Binding(
-                    get: { item.purchasePrice?.numericValue ?? 0 },
-                    set: { newValue in
-                        item.purchasePrice = newValue > 0 ? .confirmed(newValue) : nil
-                    }
+                    get: { item.purchasePrice ?? 0 },
+                    set: { item.purchasePrice = $0 > 0 ? $0 : nil }
                 ), format: .number.precision(.fractionLength(2)))
                 .multilineTextAlignment(.trailing)
             }
@@ -171,10 +169,8 @@ struct ItemFormSheet: View {
                 Text("Estimated Value")
                 Spacer()
                 TextField("0.00", value: Binding(
-                    get: { item.estimatedValue?.numericValue ?? 0 },
-                    set: { newValue in
-                        item.estimatedValue = newValue > 0 ? .assumed(newValue) : nil
-                    }
+                    get: { item.estimatedValue ?? 0 },
+                    set: { item.estimatedValue = $0 > 0 ? $0 : nil }
                 ), format: .number.precision(.fractionLength(2)))
                 .multilineTextAlignment(.trailing)
             }

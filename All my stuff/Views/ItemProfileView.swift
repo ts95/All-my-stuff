@@ -157,14 +157,14 @@ struct ItemProfileView: View {
             HStack {
                 Text("Purchase Price")
                 Spacer()
-                Text(item.purchasePrice?.displayValue ?? "Not set")
+                Text(item.purchasePrice.map { String(format: "%.2f", $0) } ?? "Not set")
                     .foregroundStyle(item.purchasePrice != nil ? .primary : .secondary)
             }
 
             HStack {
                 Text("Estimated Value")
                 Spacer()
-                Text(item.estimatedValue?.displayValue ?? "Not set")
+                Text(item.estimatedValue.map { String(format: "%.2f", $0) } ?? "Not set")
                     .foregroundStyle(item.estimatedValue != nil ? .primary : .secondary)
             }
         }
