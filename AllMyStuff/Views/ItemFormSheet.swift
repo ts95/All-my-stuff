@@ -85,7 +85,7 @@ struct ItemFormSheet: View {
 
     private var photoSection: some View {
         Section("Photo") {
-            ImageProcessingOverlay(isProcessing: isProcessingPhoto) {
+            ProcessingOverlay(isProcessing: isProcessingPhoto) {
                 if let image = previewImage ?? ImageHelper.imageDataToImage(item.photo) {
                     image
                         .resizable()

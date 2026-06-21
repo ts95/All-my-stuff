@@ -62,7 +62,7 @@ struct ItemProfileView: View {
                 selection: $photoSelection,
                 matching: .images
             ) {
-                ImageProcessingOverlay(isProcessing: isProcessingPhoto) {
+                ProcessingOverlay(isProcessing: isProcessingPhoto) {
                     if let image = previewImage ?? ImageHelper.imageDataToImage(item.photo) {
                         image
                             .resizable()
