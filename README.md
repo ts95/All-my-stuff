@@ -37,7 +37,7 @@ Development is powered by **OpenCode** with the **superpowers** plugin, alongsid
 ## Project Structure
 
 ```
-All my stuff/
+AllMyStuff/
 ├── Models/
 │   ├── Item.swift            // Core inventory item model
 │   ├── ItemCategory.swift    // Item category
@@ -56,13 +56,13 @@ All my stuff/
 │   ├── CategoryStore.swift         // @Observable store for ItemCategory CRUD
 │   ├── LocationStore.swift         // @Observable store for ItemLocation CRUD
 │   └── DependencyRegistration.swift // DependencyKey conformance + prepareDependencies
-├── All_my_stuffTests/
+├── AllMyStuffTests/
 │   ├── Models/DataModelTests.swift           // SwiftData model tests
 │   ├── Services/StoreTests.swift             // Store CRUD + query tests
 │   ├── Integration/ItemCRUDTests.swift       // Direct SwiftData CRUD integration
 │   ├── Integration/ItemFormSheetTests.swift  // Form sheet model integration
 │   ├── Integration/ItemProfileTests.swift    // Profile view integration
 │   └── Views/ProfileViewSmokeTests.swift     // UI smoke tests
-├── All_my_stuffUITests/                    // XCUITest launch tests
-└── All_my_stuffApp.swift                   // ModelContainer + root view
+├── AllMyStuffUITests/                    // XCUITest launch tests
+└── AllMyStuffApp.swift                   // ModelContainer + root view
 ```
