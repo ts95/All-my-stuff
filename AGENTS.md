@@ -18,6 +18,7 @@
 | Run tests | `xcodebuild test-without-building` (CLI) | `xcode_RunAllTests` / `xcode_RunSomeTests` (MCP has simulator cloning bug) |
 | Get test list | `xcode_GetTestList` | — |
 | Render a SwiftUI preview | `xcode_RenderPreview` | — |
+| Inspect simulator UI at runtime | `ios-simulator-mcp` tools (`ui_describe_all`, `ui_find_element`, etc.) | — |
 
 Only fall back to generic tools when the Xcode MCP cannot express what you need (e.g., inspecting non-project files like `AGENTS.md`, running `git` commands, or reading build logs with `xcode_GetBuildLog`).
 
@@ -83,3 +84,4 @@ The following skills are available in `.agents/skills/` — invoke the relevant 
 | `swift-language` | Modern Swift idioms: if/switch expressions, typed throws, property wrappers, opaque/existential types, Codable, Regex builders, collection APIs |
 | `swift-api-design-guidelines` | Naming conventions, argument labels, documentation comments, protocol naming, call site clarity |
 | `swift-dependencies` | @Dependency, DependencyKey, withDependencies, prepareDependencies, context auto-detection (.live/.preview/.test), SwiftUI integration, escaping closures, testing overrides |
+| `ios-simulator-mcp` | Inspect simulator UI via accessibility tree, tap/type/swipe automation, element search, screenshot, app launch/install |
