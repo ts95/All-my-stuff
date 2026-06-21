@@ -19,7 +19,7 @@ final class CategoryStore: EntityStoreProtocol, @unchecked Sendable {
 
     // MARK: - EntityStoreProtocol
 
-    func fetchAll() async throws {
+    func fetchAll() throws {
         guard let context else {
             return
         }
@@ -36,7 +36,7 @@ final class CategoryStore: EntityStoreProtocol, @unchecked Sendable {
         isLoading = false
     }
 
-    func query(_ predicate: @escaping @Sendable (ItemCategory) -> Bool) async throws -> [ItemCategory] {
+    func query(_ predicate: @escaping @Sendable (ItemCategory) -> Bool) throws -> [ItemCategory] {
         guard let context else {
             return items.filter(predicate)
         }
@@ -47,35 +47,35 @@ final class CategoryStore: EntityStoreProtocol, @unchecked Sendable {
         return results.filter(predicate)
     }
 
-    func insert(_ entity: ItemCategory) async throws {
+    func insert(_ entity: ItemCategory) throws {
         guard let context else {
             items.append(entity)
             return
         }
         context.insert(entity)
-        try await fetchAll()
+        try fetchAll()
     }
 
-    func save(_ entity: ItemCategory) async throws {
+    func save(_ entity: ItemCategory) throws {
         guard let context else {
             return
         }
         try context.save()
-        try await fetchAll()
+        try fetchAll()
     }
 
-    func delete(_ entity: ItemCategory) async throws {
+    func delete(_ entity: ItemCategory) throws {
         guard let context else {
             items.removeAll { $0.id == entity.id }
             return
         }
         context.delete(entity)
         try context.save()
-        try await fetchAll()
+        try fetchAll()
     }
 
-    func refresh() async throws {
-        try await fetchAll()
+    func refresh() throws {
+        try fetchAll()
     }
 
     // MARK: - Factory Methods

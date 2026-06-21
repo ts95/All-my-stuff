@@ -42,7 +42,7 @@ func makeProfilePreview() -> some View {
     let container = seedListPreview()
 
     let fd = FetchDescriptor<Item>()
-    var ctx = ModelContext(container)
+    let ctx = ModelContext(container)
     let item = (try? ctx.fetch(fd))?.first
 
     return NavigationStack {
