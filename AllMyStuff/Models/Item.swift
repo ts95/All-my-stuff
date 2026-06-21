@@ -11,6 +11,7 @@ final class Item {
     var purchasePrice: Double?
     var estimatedValue: Double?
     var datePurchased: Date?
+    var status: String = ItemStatus.undecided.rawValue
 
     @Relationship(deleteRule: .nullify, inverse: \ItemCategory.items)
     var categories: [ItemCategory]?

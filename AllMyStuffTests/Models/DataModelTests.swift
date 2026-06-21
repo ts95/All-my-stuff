@@ -92,6 +92,22 @@ struct DataModelTests {
         #expect(ItemStatus.trash.label == "Trash")
     }
 
+    @Test func item_defaultsToUndecidedStatus() async throws {
+        let item = Item(name: "Laptop", datePurchased: Date())
+        #expect(item.status == ItemStatus.undecided.rawValue)
+    }
+
+    @Test func item_statusPersists() async throws {
+        let item = Item(name: "Laptop", datePurchased: Date())
+        item.status = ItemStatus.sell.rawValue
+        context.insert(item)
+        try context.save()
+
+        let fd = FetchDescriptor<Item>()
+        let results = try context.fetch(fd)
+        #expect(results[0].status == ItemStatus.sell.rawValue)
+    }
+
     @Test func item_nil_prices_default() async throws {
         let item = Item(name: "Phone", datePurchased: Date())
         context.insert(item)
