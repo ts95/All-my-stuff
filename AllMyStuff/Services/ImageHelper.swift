@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-struct AssetStorage {
+struct ImageHelper {
     static func resizeImageData(_ data: Data, maxDimension: Int = 1024) -> Data? {
         guard let uiImage = UIImage(data: data) else { return nil }
         let size = uiImage.size

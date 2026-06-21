@@ -63,7 +63,7 @@ struct ItemProfileView: View {
                 matching: .images
             ) {
                 ImageProcessingOverlay(isProcessing: isProcessingPhoto) {
-                    if let image = previewImage ?? AssetStorage.imageDataToImage(item.photo) {
+                    if let image = previewImage ?? ImageHelper.imageDataToImage(item.photo) {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -88,8 +88,8 @@ struct ItemProfileView: View {
                 Task {
                     isProcessingPhoto = true
                     if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                        item.photo = AssetStorage.resizeImageData(data)
-                        previewImage = AssetStorage.imageDataToImage(data)
+                        item.photo = ImageHelper.resizeImageData(data)
+                        previewImage = ImageHelper.imageDataToImage(data)
                     }
                     isProcessingPhoto = false
                 }

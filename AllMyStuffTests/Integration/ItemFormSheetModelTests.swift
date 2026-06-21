@@ -70,7 +70,7 @@ struct ItemFormSheetModelTests {
                 return
             }
 
-            let resized = AssetStorage.resizeImageData(data, maxDimension: 1024)
+            let resized = ImageHelper.resizeImageData(data, maxDimension: 1024)
             #expect(resized != nil)
             if let r = resized {
                 #expect(r.count > 0)

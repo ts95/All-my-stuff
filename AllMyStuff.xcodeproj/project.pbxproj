@@ -18,37 +18,37 @@
 			containerPortal = 29F268F12FE71C4800D1CF7E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 29F268F82FE71C4800D1CF7E;
-			remoteInfo = "AllMyStuff";
+			remoteInfo = AllMyStuff;
 		};
 		29F269112FE71C4900D1CF7E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29F268F12FE71C4800D1CF7E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 29F268F82FE71C4800D1CF7E;
-			remoteInfo = "AllMyStuff";
+			remoteInfo = AllMyStuff;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		29F268F92FE71C4800D1CF7E /* AllMyStuff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AllMyStuff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllMyStuffTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllMyStuffUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F268F92FE71C4800D1CF7E /* AllMyStuff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllMyStuff.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllMyStuffTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllMyStuffUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		29F268FB2FE71C4800D1CF7E /* AllMyStuff */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "AllMyStuff";
+			path = AllMyStuff;
 			sourceTree = "<group>";
 		};
 		29F269092FE71C4900D1CF7E /* AllMyStuffTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "AllMyStuffTests";
+			path = AllMyStuffTests;
 			sourceTree = "<group>";
 		};
 		29F269132FE71C4900D1CF7E /* AllMyStuffUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "AllMyStuffUITests";
+			path = AllMyStuffUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -119,12 +119,12 @@
 			fileSystemSynchronizedGroups = (
 				29F268FB2FE71C4800D1CF7E /* AllMyStuff */,
 			);
-			name = "AllMyStuff";
+			name = AllMyStuff;
 			packageProductDependencies = (
 				294B77E62FE7EB1D00ABC099 /* Dependencies */,
 				294B77E82FE7EB1D00ABC099 /* DependenciesMacros */,
 			);
-			productName = "AllMyStuff";
+			productName = AllMyStuff;
 			productReference = 29F268F92FE71C4800D1CF7E /* AllMyStuff.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -144,11 +144,11 @@
 			fileSystemSynchronizedGroups = (
 				29F269092FE71C4900D1CF7E /* AllMyStuffTests */,
 			);
-			name = "AllMyStuffTests";
+			name = AllMyStuffTests;
 			packageProductDependencies = (
 				294B77EA2FE7EB1D00ABC099 /* DependenciesTestSupport */,
 			);
-			productName = "AllMyStuffTests";
+			productName = AllMyStuffTests;
 			productReference = 29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -168,10 +168,10 @@
 			fileSystemSynchronizedGroups = (
 				29F269132FE71C4900D1CF7E /* AllMyStuffUITests */,
 			);
-			name = "AllMyStuffUITests";
+			name = AllMyStuffUITests;
 			packageProductDependencies = (
 			);
-			productName = "AllMyStuffUITests";
+			productName = AllMyStuffUITests;
 			productReference = 29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -412,7 +412,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "AllMyStuff/AllMyStuff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = AllMyStuff/AllMyStuff.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
@@ -448,7 +448,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "AllMyStuff/AllMyStuff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = AllMyStuff/AllMyStuff.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
@@ -539,7 +539,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "AllMyStuff";
+				TEST_TARGET_NAME = AllMyStuff;
 			};
 			name = Debug;
 		};
@@ -559,7 +559,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "AllMyStuff";
+				TEST_TARGET_NAME = AllMyStuff;
 			};
 			name = Release;
 		};
