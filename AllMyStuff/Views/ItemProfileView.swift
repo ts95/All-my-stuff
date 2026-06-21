@@ -23,6 +23,10 @@ struct ItemProfileView: View {
             .map { $0.formatted(.number.precision(.fractionLength(2))) } ?? "Not set"
     }
 
+    private var currentStatus: ItemStatus {
+        ItemStatus(rawValue: item.status) ?? .undecided
+    }
+
     var body: some View {
         Form {
             photoSection
@@ -101,12 +105,23 @@ struct ItemProfileView: View {
 
     private var nameNotesSection: some View {
         Section {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Name")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text(item.name)
-                    .font(.headline)
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Name")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(item.name)
+                        .font(.headline)
+                }
+                Spacer()
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(currentStatus.color)
+                        .frame(width: 8, height: 8)
+                    Text(currentStatus.label)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
 
             if !item.notes.isEmpty {
