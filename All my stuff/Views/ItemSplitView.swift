@@ -3,7 +3,6 @@ import Dependencies
 
 struct ItemSplitView: View {
     @State private var navigationPath = NavigationPath()
-    @State private var selectedItem: Item?
     @State private var creatingItem: Item?
     @State private var editingItem: Item?
     @Dependency(\.itemStore) private var itemStore
@@ -25,38 +24,20 @@ struct ItemSplitView: View {
                         ItemProfileView(
                             item: item,
                             onEdit: { editingItem = item },
-                            onDelete: {
-                                navigationPath.removeLast()
-                                selectedItem = nil
-                            }
+                            onDelete: { navigationPath.removeLast() }
                         )
-                        .onAppear { selectedItem = item }
                     }
             }
         } detail: {
-            if let item = selectedItem {
-                ItemProfileView(
-                    item: item,
-                    onEdit: { editingItem = item },
-                    onDelete: {
-                        navigationPath.removeLast()
-                        selectedItem = nil
-                    }
-                )
-            } else {
-                Text("Select or create an item")
-                    .foregroundStyle(.secondary)
-            }
+            Text("Select or create an item")
+                .foregroundStyle(.secondary)
         }
         .sheet(item: $creatingItem) { item in
             ItemFormSheet(
                 item: item,
                 isCreateMode: true,
                 onCancel: {},
-                onDone: {
-                    navigationPath.append(item)
-                    selectedItem = item
-                }
+                onDone: { navigationPath.append(item) }
             )
         }
         .sheet(item: $editingItem) { item in
