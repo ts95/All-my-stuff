@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import SwiftUI
 
 @Observable
 final class ItemStore: EntityStoreProtocol, @unchecked Sendable {
@@ -109,15 +108,8 @@ final class ItemStore: EntityStoreProtocol, @unchecked Sendable {
 
     // MARK: - Factory Methods
 
-    static func live() -> ItemStore {
-        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
-        let config = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false,
-            cloudKitDatabase: .private("iCloud.com.tonisucic.All-my-stuff")
-        )
-        let container = try! ModelContainer(for: schema, configurations: [config])
-        return ItemStore(context: container.mainContext)
+    static func live(context: ModelContext) -> ItemStore {
+        ItemStore(context: context)
     }
 
     static func preview() -> ItemStore {
