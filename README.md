@@ -8,7 +8,7 @@ I have lots of stuff — sometimes I forget what I have, where things are, or wh
 
 ## Core Concepts
 
-- **Items** — things you own (name, photo, description, purchase price, estimated value, date purchased)
+- **Items** — things you own (name, photo, notes, purchase price, estimated value, date purchased)
 - **Categories** — group items by type (electronics, jewelry, collectibles, etc.)
 - **Locations** — track where items are stored; an item can be associated with multiple locations
 
@@ -18,7 +18,7 @@ Each financial field (`purchasePrice`, `estimatedValue`) supports three states: 
 
 - **SwiftUI** with `NavigationSplitView` for adaptive iOS/iPadOS/Mac layouts
 - **SwiftData** for local persistence with many-to-many relationships between items, categories, and locations
-- **iCloud CloudKit** sync via SwiftData's built-in support — same data across all devices signed into the same Apple ID
+- **iCloud CloudKit** entitlements configured, but sync not yet enabled in the ModelContainer
 - No external dependencies
 
 ## About This Project
@@ -39,12 +39,12 @@ All my stuff/
 │   ├── ItemLocation.swift    // Storage location
 │   └── PriceState.swift      // Enum: .confirmed, .assumed, .unknown
 ├── Views/
-│   ├── ContentView.swift           // Split-view coordinator
-│   ├── ItemListView.swift          // Main list with search & grouping
-│   ├── ItemProfileView.swift       // Detail/profile view for a single item
+│   ├── ContentView.swift           // Split-view coordinator with sheet management
+│   ├── ItemListView.swift          // Main list with search, filter by category/location
+│   ├── ItemProfileView.swift       // Read-only detail/profile view for a single item
 │   ├── ItemFormSheet.swift         // Sheet for creating/editing items
-│   ├── CategoryPickerView.swift    // Add/remove categories
-│   └── LocationPickerView.swift    // Add/remove locations
+│   ├── CategoryPickerView.swift    // Embedded section for managing item categories
+│   └── LocationPickerView.swift    // Embedded section for managing item locations
 ├── Services/
 │   ├── AssetStorage.swift  // Photo/image handling
 │   └── PreviewHelper.swift // SwiftUI preview factory helper
