@@ -1,6 +1,6 @@
 # All My Stuff
 
-A personal inventory app for tracking what you own, where it's stored, and what it's worth — synced across all your Apple devices via iCloud.
+A personal inventory app for tracking what you own, where it's stored, and what it's worth.
 
 ## Why
 
