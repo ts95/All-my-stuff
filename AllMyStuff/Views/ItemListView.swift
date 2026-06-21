@@ -18,6 +18,32 @@ struct ItemListView: View {
     @Dependency(\.itemStore) private var itemStore
     @State private var searchText = ""
     @State private var filterOption: FilterOption = .all
+    @State private var fetchError: String?
+
+    private var fetchErrorBinding: Binding<Bool> {
+        Binding(
+            get: { fetchError != nil },
+            set: { if !$0 { fetchError = nil } }
+        )
+    }
+
+    private var loadingOverlay: some View {
+        Group {
+            if itemStore.isLoading {
+                ProgressView()
+            }
+        }
+    }
+
+    private func retryFetch() {
+        Task {
+            do {
+                try itemStore.fetchAll()
+            } catch {
+                fetchError = error.localizedDescription
+            }
+        }
+    }
 
     var filteredItems: [Item] {
         if searchText.isEmpty {
@@ -130,7 +156,19 @@ struct ItemListView: View {
             do {
                 try itemStore.fetchAll()
             } catch {
-                print("Failed to fetch items: \(error)")
+                fetchError = error.localizedDescription
+            }
+        }
+        .overlay {
+            loadingOverlay
+        }
+        .alert("Fetch Error", isPresented: fetchErrorBinding) {
+            Button("Retry") {
+                retryFetch()
+            }
+        } message: {
+            if let error = fetchError {
+                Text(error)
             }
         }
     }

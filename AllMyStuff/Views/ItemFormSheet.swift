@@ -17,6 +17,14 @@ struct ItemFormSheet: View {
     @State private var previewImage: Image?
     @State private var purchasePriceText = ""
     @State private var estimatedValueText = ""
+    @State private var saveError: String?
+
+    private var saveErrorBinding: Binding<Bool> {
+        Binding(
+            get: { saveError != nil },
+            set: { if !$0 { saveError = nil } }
+        )
+    }
 
     private var isValid: Bool {
         !item.name.trimmingCharacters(in: .whitespaces).isEmpty
@@ -64,7 +72,7 @@ struct ItemFormSheet: View {
                                 onDone()
                                 dismiss()
                             } catch {
-                                // Save failed - stay on sheet to allow retry
+                                saveError = error.localizedDescription
                             }
                             isSaving = false
                         }
@@ -76,6 +84,13 @@ struct ItemFormSheet: View {
                         }
                     }
                     .disabled(isCreateMode && !isValid || isSaving)
+                }
+            }
+            .alert("Save Error", isPresented: saveErrorBinding) {
+                Button("OK") {}
+            } message: {
+                if let error = saveError {
+                    Text(error)
                 }
             }
         }

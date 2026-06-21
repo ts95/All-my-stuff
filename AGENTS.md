@@ -40,6 +40,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 - Files named after the primary type they contain (e.g., `Item.swift` contains `Item`)
 - One primary declaration per file where possible
 - **No messy inline code**: Extract formatting, computed values, and logic into named computed properties — never inline complex expressions in view bodies. Use multiple lines in computed properties for readability. The `??` operator is an exception and stays on the same line.
+- **No inline bindings**: Extract `Binding(get:set:)` into named computed properties (e.g. `private var fetchErrorBinding: Binding<Bool>`). Inline bindings are just as messy as inline expressions.
 - **Break down big views and methods**: Whenever a view or method grows large or complicated, split it into smaller self-contained parts — extract subviews, break functions into smaller named functions, decompose complex logic.
 
 ### Architecture
