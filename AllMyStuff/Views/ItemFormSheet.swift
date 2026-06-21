@@ -242,7 +242,7 @@ struct ItemFormSheet: View {
 
     private var statusBinding: Binding<ItemStatus> {
         Binding(
-            get: { ItemStatus(rawValue: item.status) ?? .undecided },
+            get: { item.parsedStatus },
             set: { item.status = $0.rawValue }
         )
     }
@@ -254,6 +254,7 @@ struct ItemFormSheet: View {
                     Text(status.label).tag(status)
                 }
             }
+            .pickerStyle(.segmented)
         }
     }
 }

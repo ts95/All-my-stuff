@@ -19,6 +19,10 @@ final class Item {
     @Relationship(deleteRule: .nullify, inverse: \ItemLocation.items)
     var locations: [ItemLocation]?
 
+    var parsedStatus: ItemStatus {
+        ItemStatus(rawValue: status) ?? .undecided
+    }
+
     init(name: String, datePurchased: Date? = nil) {
         self.name = name
         self.datePurchased = datePurchased

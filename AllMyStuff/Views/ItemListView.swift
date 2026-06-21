@@ -208,7 +208,7 @@ struct ItemRowView: View {
     let item: Item
 
     private var currentStatus: ItemStatus {
-        ItemStatus(rawValue: item.status) ?? .undecided
+        item.parsedStatus
     }
 
     var body: some View {
