@@ -30,7 +30,7 @@
 **Interfaces:**
 - Produces: `EntityStoreProtocol<Entity>` protocol with `items`, `isLoading`, `error`, `fetchAll()`, `query(_:)`, `insert(_:)`, `save(_:)`, `delete(_:)`, `refresh()`, `grouped(by:)`
 
-- [ ] **Step 1: Write the protocol**
+- [x] **Step 1: Write the protocol**
 
 ```swift
 import Foundation
@@ -51,12 +51,12 @@ protocol EntityStoreProtocol: Sendable {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS (no errors)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Services/EntityStoreProtocol.swift"
@@ -74,7 +74,7 @@ git commit -m "feat: add EntityStoreProtocol defining store contract"
 - Consumes: `EntityStoreProtocol` from Task 1, `Item`/`ItemCategory`/`ItemLocation` models
 - Produces: `ItemStore` class conforming to `EntityStoreProtocol<Item>` and `DependencyKey`
 
-- [ ] **Step 1: Write ItemStore with all three implementations**
+- [x] **Step 1: Write ItemStore with all three implementations**
 
 ```swift
 import Foundation
@@ -246,12 +246,12 @@ final class ItemStore: EntityStoreProtocol, @unchecked Sendable {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS (LSP errors are false positives, trust the build)
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Services/ItemStore.swift"
@@ -269,7 +269,7 @@ git commit -m "feat: add ItemStore with live, preview, and test implementations"
 - Consumes: `EntityStoreProtocol` from Task 1, `ItemCategory` model
 - Produces: `CategoryStore` class conforming to `EntityStoreProtocol<ItemCategory>` and `DependencyKey`
 
-- [ ] **Step 1: Write CategoryStore**
+- [x] **Step 1: Write CategoryStore**
 
 ```swift
 import Foundation
@@ -369,12 +369,12 @@ final class CategoryStore: EntityStoreProtocol, @unchecked Sendable {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Services/CategoryStore.swift"
@@ -392,7 +392,7 @@ git commit -m "feat: add CategoryStore with live, preview, and test implementati
 - Consumes: `EntityStoreProtocol` from Task 1, `ItemLocation` model
 - Produces: `LocationStore` class conforming to `EntityStoreProtocol<ItemLocation>` and `DependencyKey`
 
-- [ ] **Step 1: Write LocationStore**
+- [x] **Step 1: Write LocationStore**
 
 ```swift
 import Foundation
@@ -492,12 +492,12 @@ final class LocationStore: EntityStoreProtocol, @unchecked Sendable {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Services/LocationStore.swift"
@@ -515,7 +515,7 @@ git commit -m "feat: add LocationStore with live, preview, and test implementati
 - Consumes: `ItemStore` from Task 2, `CategoryStore` from Task 3, `LocationStore` from Task 4
 - Produces: `DependencyKey` conformances, `DependencyValues` extensions, `prepareDependencies()` helper
 
-- [ ] **Step 1: Write DependencyRegistration**
+- [x] **Step 1: Write DependencyRegistration**
 
 ```swift
 import Dependencies
@@ -578,12 +578,12 @@ func prepareDependencies() {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Services/DependencyRegistration.swift"
@@ -600,7 +600,7 @@ git commit -m "feat: register all stores as swift-dependencies with live/preview
 **Interfaces:**
 - Consumes: `prepareDependencies()` from Task 5
 
-- [ ] **Step 1: Update All_my_stuffApp**
+- [x] **Step 1: Update All_my_stuffApp**
 
 Replace the current file with:
 
@@ -635,12 +635,12 @@ struct All_my_stuffApp: App {
 
 The change: Add `init() { prepareDependencies() }`. Keep `.modelContainer(sharedModelContainer)` for now — live stores still need the container via `ModelContainer.mainContext`.
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/All_my_stuffApp.swift"
@@ -657,7 +657,7 @@ git commit -m "feat: call prepareDependencies at app launch"
 **Interfaces:**
 - Consumes: `ItemStore` from Task 2, `CategoryStore` from Task 3
 
-- [ ] **Step 1: Write store unit tests**
+- [x] **Step 1: Write store unit tests**
 
 ```swift
 import Testing
@@ -750,12 +750,12 @@ struct LocationStoreTests {
 }
 ```
 
-- [ ] **Step 2: Run tests and verify**
+- [x] **Step 2: Run tests and verify**
 
 Run: `xcode_RunSomeTests` for the new test files
 Expected: All tests PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuffTests/Services/ItemStoreTests.swift"
@@ -772,7 +772,7 @@ git commit -m "test: add unit tests for ItemStore, CategoryStore, LocationStore 
 **Interfaces:**
 - Consumes: `ItemStore` via `@Dependency(\.itemStore)`, `CategoryStore` via `@Dependency(\.categoryStore)`, `LocationStore` via `@Dependency(\.locationStore)`
 
-- [ ] **Step 1: Replace @Query and @Environment with @Dependency**
+- [x] **Step 1: Replace @Query and @Environment with @Dependency**
 
 Replace the `ItemListView` struct body:
 
@@ -885,17 +885,17 @@ Update the Preview:
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Verify Preview works**
+- [x] **Step 3: Verify Preview works**
 
 Run: `xcode_RenderPreview` on `ItemListView.swift`
 Expected: Preview renders with sample data, no container errors
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add "All my stuff/Views/ItemListView.swift"
@@ -912,7 +912,7 @@ git commit -m "refactor: migrate ItemListView from @Query to @Dependency itemSto
 **Interfaces:**
 - Consumes: `ItemStore` via `@Dependency(\.itemStore)`
 
-- [ ] **Step 1: Replace modelContext with itemStore**
+- [x] **Step 1: Replace modelContext with itemStore**
 
 Replace `createNewItem()` to use the store:
 
@@ -947,17 +947,17 @@ Update the Preview:
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Verify Preview works**
+- [x] **Step 3: Verify Preview works**
 
 Run: `xcode_RenderPreview` on `ContentView.swift`
 Expected: Preview renders with sample data
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add "All my stuff/Views/ContentView.swift"
@@ -974,7 +974,7 @@ git commit -m "refactor: migrate ContentView from modelContext to @Dependency it
 **Interfaces:**
 - Consumes: `ItemStore` via `@Dependency(\.itemStore)`, `CategoryStore` via `@Dependency(\.categoryStore)`, `LocationStore` via `@Dependency(\.locationStore)`
 
-- [ ] **Step 1: Replace modelContext with itemStore**
+- [x] **Step 1: Replace modelContext with itemStore**
 
 Replace `@Environment(\.modelContext)` with `@Dependency(\.itemStore)`. Update the Cancel and Done buttons:
 
@@ -1030,17 +1030,17 @@ Update the Preview:
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Verify Preview works**
+- [x] **Step 3: Verify Preview works**
 
 Run: `xcode_RenderPreview` on `ItemFormSheet.swift`
 Expected: Preview renders form with sample data
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add "All my stuff/Views/ItemFormSheet.swift"
@@ -1057,7 +1057,7 @@ git commit -m "refactor: migrate ItemFormSheet from modelContext to @Dependency 
 **Interfaces:**
 - Consumes: `ItemStore` via `@Dependency(\.itemStore)`
 
-- [ ] **Step 1: Replace modelContext with itemStore**
+- [x] **Step 1: Replace modelContext with itemStore**
 
 Replace `@Environment(\.modelContext)` with `@Dependency(\.itemStore)`. Update `deleteItem()`:
 
@@ -1089,17 +1089,17 @@ Update the Preview:
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Verify Preview works**
+- [x] **Step 3: Verify Preview works**
 
 Run: `xcode_RenderPreview` on `ItemProfileView.swift`
 Expected: Preview renders profile with sample data
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add "All my stuff/Views/ItemProfileView.swift"
@@ -1116,7 +1116,7 @@ git commit -m "refactor: migrate ItemProfileView from modelContext to @Dependenc
 **Interfaces:**
 - Consumes: `CategoryStore` via `@Dependency(\.categoryStore)`
 
-- [ ] **Step 1: Replace @Query and modelContext with categoryStore**
+- [x] **Step 1: Replace @Query and modelContext with categoryStore**
 
 ```swift
 struct ItemCategoryPickerView: View {
@@ -1187,12 +1187,12 @@ struct ItemCategoryPickerView: View {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Views/CategoryPickerView.swift"
@@ -1209,7 +1209,7 @@ git commit -m "refactor: migrate CategoryPickerView from @Query to @Dependency c
 **Interfaces:**
 - Consumes: `LocationStore` via `@Dependency(\.locationStore)`
 
-- [ ] **Step 1: Replace @Query and modelContext with locationStore**
+- [x] **Step 1: Replace @Query and modelContext with locationStore**
 
 ```swift
 struct ItemLocationPickerView: View {
@@ -1280,12 +1280,12 @@ struct ItemLocationPickerView: View {
 }
 ```
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Views/LocationPickerView.swift"
@@ -1304,16 +1304,16 @@ git commit -m "refactor: migrate LocationPickerView from @Query to @Dependency l
 - Modify: `All my stuff/Views/CategoryPickerView.swift`
 - Modify: `All my stuff/Views/LocationPickerView.swift`
 
-- [ ] **Step 1: Remove `import SwiftData` from each view file**
+- [x] **Step 1: Remove `import SwiftData` from each view file**
 
 In each of the 6 view files, remove the line `import SwiftData`. The views no longer reference any SwiftData types directly.
 
-- [ ] **Step 2: Build and verify**
+- [x] **Step 2: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS — this is the critical verification that views are fully decoupled from SwiftData
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "All my stuff/Views/*.swift"
@@ -1327,20 +1327,20 @@ git commit -m "refactor: remove import SwiftData from all view files"
 **Files:**
 - Delete: `All my stuff/Services/PreviewHelper.swift`
 
-- [ ] **Step 1: Verify all previews no longer reference PreviewHelper**
+- [x] **Step 1: Verify all previews no longer reference PreviewHelper**
 
 Check that `makeContentViewPreview()`, `makeProfilePreview()`, and `makePreviewContainer()` are no longer called in any `#Preview` block. All previews should now be self-contained using `previewValue`.
 
-- [ ] **Step 2: Delete PreviewHelper.swift**
+- [x] **Step 2: Delete PreviewHelper.swift**
 
 Remove `All my stuff/Services/PreviewHelper.swift` from the project.
 
-- [ ] **Step 3: Build and verify**
+- [x] **Step 3: Build and verify**
 
 Run: `xcode_BuildProject`
 Expected: PASS
 
-- [ ] **Step 4: Verify all previews work**
+- [x] **Step 4: Verify all previews work**
 
 Run: `xcode_RenderPreview` on each view file:
 - `ContentView.swift`
@@ -1350,7 +1350,7 @@ Run: `xcode_RenderPreview` on each view file:
 
 Expected: All previews render with sample data, zero container setup
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git rm "All my stuff/Services/PreviewHelper.swift"
@@ -1364,21 +1364,21 @@ git commit -m "refactor: remove PreviewHelper — previews now use swift-depende
 **Files:**
 - No file changes
 
-- [ ] **Step 1: Run all tests**
+- [x] **Step 1: Run all tests**
 
 Run: `xcode_RunAllTests`
 Expected: All tests PASS (existing integration tests + new store unit tests)
 
-- [ ] **Step 2: Full build**
+- [x] **Step 2: Full build**
 
 Run: `xcode_BuildProject`
 Expected: PASS with no errors
 
-- [ ] **Step 3: Verify no SwiftData imports in Views**
+- [x] **Step 3: Verify no SwiftData imports in Views**
 
 Search for `import SwiftData` in `All my stuff/Views/` — should find zero matches.
 
-- [ ] **Step 4: Commit final state**
+- [x] **Step 4: Commit final state**
 
 ```bash
 git add -A
@@ -1392,7 +1392,7 @@ git commit -m "feat: complete database abstraction — views use @Observable sto
 **Files:**
 - Modify: `AGENTS.md` (outside Xcode project, use generic tools)
 
-- [ ] **Step 1: Update conventions section**
+- [x] **Step 1: Update conventions section**
 
 The following rules are already added (from the design session). Verify they exist and are accurate:
 - Rule 11: No SwiftData in Views
@@ -1401,7 +1401,7 @@ The following rules are already added (from the design session). Verify they exi
 
 If any need refinement based on the actual implementation, update them.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add AGENTS.md
