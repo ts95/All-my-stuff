@@ -66,7 +66,7 @@ final class CategoryStore: EntityStoreProtocol, @unchecked Sendable {
 
     func delete(_ entity: ItemCategory) throws {
         guard let context else {
-            items.removeAll { $0.id == entity.id }
+            items.removeAll { $0 === entity }
             return
         }
         context.delete(entity)

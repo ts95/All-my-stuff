@@ -66,7 +66,7 @@ final class LocationStore: EntityStoreProtocol, @unchecked Sendable {
 
     func delete(_ entity: ItemLocation) throws {
         guard let context else {
-            items.removeAll { $0.id == entity.id }
+            items.removeAll { $0 === entity }
             return
         }
         context.delete(entity)
