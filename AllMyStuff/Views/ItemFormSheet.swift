@@ -50,6 +50,7 @@ struct ItemFormSheet: View {
                 ItemLocationPickerView(item: item)
                 pricesSection
                 dateSection
+                statusSection
             }
             .navigationTitle(isCreateMode ? "New Item" : "Edit Item")
             .navigationBarTitleDisplayMode(.inline)
@@ -234,6 +235,25 @@ struct ItemFormSheet: View {
                 get: { item.datePurchased ?? Date.distantPast },
                 set: { item.datePurchased = $0 }
             ), displayedComponents: .date)
+        }
+    }
+
+    // MARK: - Status Section
+
+    private var statusBinding: Binding<ItemStatus> {
+        Binding(
+            get: { ItemStatus(rawValue: item.status) ?? .undecided },
+            set: { item.status = $0.rawValue }
+        )
+    }
+
+    private var statusSection: some View {
+        Section("Status") {
+            Picker("Status", selection: statusBinding) {
+                ForEach(ItemStatus.allCases) { status in
+                    Text(status.label).tag(status)
+                }
+            }
         }
     }
 }
