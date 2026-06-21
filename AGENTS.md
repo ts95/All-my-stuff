@@ -15,7 +15,7 @@
 | Create a directory | `xcode_XcodeMakeDir` | `mkdir` |
 | Check compiler issues | `xcode_XcodeRefreshCodeIssuesInFile` | — |
 | Build the app | `xcode_BuildProject` | `xcodebuild` |
-| Run tests | `xcodebuild test-without-building` (CLI) | `xcode_RunAllTests` / `xcode_RunSomeTests` (MCP has simulator cloning bug) |
+| Run tests | `xcode_RunSomeTests` (MCP, throttled to 2 tests at a time) | `xcode_RunAllTests` (spawns too many simulators) |
 | Get test list | `xcode_GetTestList` | — |
 | Render a SwiftUI preview | `xcode_RenderPreview` | — |
 | Inspect simulator UI at runtime | `ios-simulator-mcp` tools (`ui_describe_all`, `ui_find_element`, etc.) | — |
@@ -30,7 +30,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 
 - **Build**: `xcode_BuildProject` on the active scheme
 - **Preview**: `xcode_RenderPreview` on any SwiftUI view file
-- **Run tests**: `xcode_RunAllTests` for the active scheme's test plan; `xcode_RunSomeTests` for targeted tests
+- **Run tests**: `xcode_RunSomeTests` (MCP, throttled to 2 tests at a time); `xcode_RunAllTests` spawns too many simulators
 
 ## Conventions
 
