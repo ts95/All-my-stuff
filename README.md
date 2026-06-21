@@ -27,6 +27,8 @@ This app is an experiment in vibe coding — how well does a small agentic model
 
 The entire codebase is being developed conversationally with **Qwen 3.6-27B** (dense), quantized to Q4\_K\_M (4-bit K-quantization, medium quality) in GGUF format, running on an RTX 4090 via Ollama. No larger models were used — if this app works well, it's a testament to what smaller local models can achieve in agentic coding workflows.
 
+Development is powered by **OpenCode** with the **superpowers** plugin, leveraging a suite of Swift-development skills for SwiftUI patterns, navigation, layout components, SwiftData, concurrency, testing, and architecture.
+
 ## Project Structure
 
 ```
