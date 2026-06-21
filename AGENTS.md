@@ -42,6 +42,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 - **No messy inline code**: Extract formatting, computed values, and logic into named computed properties — never inline complex expressions in view bodies. Use multiple lines in computed properties for readability. The `??` operator is an exception and stays on the same line.
 - **No inline bindings**: Extract `Binding(get:set:)` into named computed properties (e.g. `private var fetchErrorBinding: Binding<Bool>`). Inline bindings are just as messy as inline expressions.
 - **Break down big views and methods**: Whenever a view or method grows large or complicated, split it into smaller self-contained parts — extract subviews, break functions into smaller named functions, decompose complex logic.
+- **DocC for non-obvious decisions**: Add DocC comments when a design choice can't be deduced from the code itself — e.g., why a particular pattern was chosen, why a property is structured a certain way, or what a component's role is in the app.
 
 ### Architecture
 
