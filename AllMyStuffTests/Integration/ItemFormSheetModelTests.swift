@@ -2,7 +2,7 @@ import Foundation
 import Testing
 import SwiftData
 import UIKit
-@testable import All_my_stuff
+@testable import AllMyStuff
 
 @Suite("Item Form Sheet Model Tests")
 struct ItemFormSheetModelTests {

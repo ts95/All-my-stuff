@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 import SwiftData
-@testable import All_my_stuff
+@testable import AllMyStuff
 
 @Suite("Item CRUD Integration Tests")
 struct ItemCRUDTests {

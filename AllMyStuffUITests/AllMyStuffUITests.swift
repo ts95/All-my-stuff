@@ -1,13 +1,13 @@
 //
-//  All_my_stuffUITests.swift
-//  All my stuffUITests
+//  AllMyStuffUITests.swift
+//  AllMyStuffUITests
 //
 //  Created by Toni Sucic on 20/06/2026.
 //
 
 import XCTest
 
-final class All_my_stuffUITests: XCTestCase {
+final class AllMyStuffUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

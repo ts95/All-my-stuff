@@ -1,5 +1,5 @@
 import Testing
-@testable import All_my_stuff
+@testable import AllMyStuff
 
 @Suite("ItemStore Tests")
 struct ItemStoreTests {

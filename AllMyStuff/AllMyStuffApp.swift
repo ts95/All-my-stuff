@@ -1,12 +1,12 @@
 //
-//  All_my_stuffApp.swift
-//  All my stuff
+//  AllMyStuffApp.swift
+//  AllMyStuff
 
 import SwiftUI
 import SwiftData
 
 @main
-struct All_my_stuffApp: App {
+struct AllMyStuffApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
         let config = ModelConfiguration(

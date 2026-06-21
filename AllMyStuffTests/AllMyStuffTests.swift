@@ -1,14 +1,14 @@
 //
-//  All_my_stuffTests.swift
-//  All my stuffTests
+//  AllMyStuffTests.swift
+//  AllMyStuffTests
 //
 //  Created by Toni Sucic on 20/06/2026.
 //
 
 import Testing
-@testable import All_my_stuff
+@testable import AllMyStuff
 
-struct All_my_stuffTests {
+struct AllMyStuffTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.

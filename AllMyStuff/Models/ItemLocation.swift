@@ -1,5 +1,5 @@
 //  ItemLocation.swift
-//  All my stuff
+//  AllMyStuff
 
 /// Renamed from `Location` to avoid ambiguity with Cocoa's built-in types in test targets.
 import Foundation

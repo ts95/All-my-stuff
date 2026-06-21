@@ -1,7 +1,7 @@
 import Testing
 import Foundation
 import SwiftData
-@testable import All_my_stuff
+@testable import AllMyStuff
 
 @Suite("Profile View Smoke Tests")
 struct ProfileViewSmokeTests {

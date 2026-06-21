@@ -1,6 +1,6 @@
 //
 //  DataModelTests.swift
-//  All my stuffTests
+//  AllMyStuffTests
 //
 //  Created by Toni Sucic on 20/06/2026.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import Testing
 import SwiftData
-@testable import All_my_stuff
+@testable import AllMyStuff
 
 @Suite("Data Model Tests")
 struct DataModelTests {

@@ -1,5 +1,5 @@
 //  ItemCategory.swift
-//  All my stuff
+//  AllMyStuff
 
 /// Renamed from `Category` to avoid ambiguity with Foundation's internal `Category` type in test targets.
 import Foundation
