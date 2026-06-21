@@ -13,6 +13,16 @@ struct ItemProfileView: View {
     @State private var previewImage: Image?
     @State private var showDeleteConfirmation = false
 
+    private var formattedPurchasePrice: String {
+        item.purchasePrice
+            .map { $0.formatted(.number.precision(.fractionLength(2))) } ?? "Not set"
+    }
+
+    private var formattedEstimatedValue: String {
+        item.estimatedValue
+            .map { $0.formatted(.number.precision(.fractionLength(2))) } ?? "Not set"
+    }
+
     var body: some View {
         Form {
             photoSection
@@ -163,14 +173,14 @@ struct ItemProfileView: View {
             HStack {
                 Text("Purchase Price")
                 Spacer()
-                Text(item.purchasePrice.map { String(format: "%.2f", $0) } ?? "Not set")
+                Text(formattedPurchasePrice)
                     .foregroundStyle(item.purchasePrice != nil ? .primary : .secondary)
             }
 
             HStack {
                 Text("Estimated Value")
                 Spacer()
-                Text(item.estimatedValue.map { String(format: "%.2f", $0) } ?? "Not set")
+                Text(formattedEstimatedValue)
                     .foregroundStyle(item.estimatedValue != nil ? .primary : .secondary)
             }
         }

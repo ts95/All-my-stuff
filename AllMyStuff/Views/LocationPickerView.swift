@@ -5,6 +5,8 @@ struct ItemLocationPickerView: View {
     @Bindable var item: Item
     @Dependency(\.locationStore) private var locationStore
 
+    @State private var newLocationText = ""
+
     var availableLocations: [ItemLocation] {
         locationStore.items.filter { !locations.contains($0) }
     }
@@ -16,7 +18,7 @@ struct ItemLocationPickerView: View {
 
     var body: some View {
         Section("Locations") {
-            if locations.isEmpty && locationStore.items.isEmpty {
+            if locations.isEmpty && locationStore.items.isEmpty && newLocationText.isEmpty {
                 Text("No locations yet.")
                     .foregroundStyle(.secondary)
             }
@@ -34,35 +36,53 @@ struct ItemLocationPickerView: View {
                 }
             }
 
-            ForEach(availableLocations, id: \.id) { loc in
-                Button("+ \(loc.name)") {
-                    var current = item.locations ?? []
-                    current.append(loc)
-                    item.locations = current
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.blue)
-            }
-
-            TextField("New location", text: Binding(
-                get: { "" },
-                set: { newValue in
-                    if !newValue.trimmingCharacters(in: .whitespaces).isEmpty {
-                        let newLoc = ItemLocation(name: newValue.trimmingCharacters(in: .whitespaces))
-                        do {
-                            try locationStore.insert(newLoc)
-                            try locationStore.save(newLoc)
-                        } catch {
-                            print("Failed to create location: \(error)")
+            if !availableLocations.isEmpty {
+                ForEach(availableLocations, id: \.id) { loc in
+                    HStack {
+                        Button {
+                            var current = item.locations ?? []
+                            current.append(loc)
+                            item.locations = current
+                        } label: {
+                            Label(loc.name, systemImage: "plus.circle.fill")
+                                .foregroundStyle(.blue)
                         }
-                        var current = item.locations ?? []
-                        current.append(newLoc)
-                        item.locations = current
+                        .buttonStyle(.plain)
+
+                        Spacer()
+
+                        Button(role: .destructive) {
+                            do {
+                                try locationStore.delete(loc)
+                            } catch {
+                                print("Failed to delete location: \(error)")
+                            }
+                        } label: {
+                            Image(systemName: "trash")
+                                .foregroundStyle(.red)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-            ))
-            .submitLabel(.done)
-            .textFieldStyle(.roundedBorder)
+            }
+
+            HStack {
+                TextField("New location", text: $newLocationText)
+                    .submitLabel(.done)
+                    .textFieldStyle(.roundedBorder)
+
+                Button {
+                    addNewLocation()
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundStyle(.blue)
+                }
+                .buttonStyle(.plain)
+                .disabled(newLocationText.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+            .onSubmit {
+                addNewLocation()
+            }
         }
         .task {
             do {
@@ -71,5 +91,23 @@ struct ItemLocationPickerView: View {
                 print("Failed to fetch locations: \(error)")
             }
         }
+    }
+
+    private func addNewLocation() {
+        let name = newLocationText.trimmingCharacters(in: .whitespaces)
+        guard !name.isEmpty else { return }
+
+        let newLoc = ItemLocation(name: name)
+        do {
+            try locationStore.insert(newLoc)
+            try locationStore.save(newLoc)
+        } catch {
+            print("Failed to create location: \(error)")
+        }
+
+        var current = item.locations ?? []
+        current.append(newLoc)
+        item.locations = current
+        newLocationText = ""
     }
 }

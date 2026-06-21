@@ -15,9 +15,21 @@ struct ItemFormSheet: View {
     @State private var isSaving = false
     @State private var isProcessingPhoto = false
     @State private var previewImage: Image?
+    @State private var purchasePriceText = ""
+    @State private var estimatedValueText = ""
 
     private var isValid: Bool {
         !item.name.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
+    private var formattedPurchasePriceText: String {
+        item.purchasePrice
+            .map { String(format: "%.2f", $0) } ?? ""
+    }
+
+    private var formattedEstimatedValueText: String {
+        item.estimatedValue
+            .map { String(format: "%.2f", $0) } ?? ""
     }
 
     var body: some View {
@@ -158,22 +170,46 @@ struct ItemFormSheet: View {
             HStack {
                 Text("Purchase Price")
                 Spacer()
-                TextField("0.00", value: Binding(
-                    get: { item.purchasePrice ?? 0 },
-                    set: { item.purchasePrice = $0 > 0 ? $0 : nil }
-                ), format: .number.precision(.fractionLength(2)))
-                .multilineTextAlignment(.trailing)
+                TextField("0.00", text: $purchasePriceText)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .onSubmit {
+                        commitPurchasePrice()
+                    }
             }
 
             HStack {
                 Text("Estimated Value")
                 Spacer()
-                TextField("0.00", value: Binding(
-                    get: { item.estimatedValue ?? 0 },
-                    set: { item.estimatedValue = $0 > 0 ? $0 : nil }
-                ), format: .number.precision(.fractionLength(2)))
-                .multilineTextAlignment(.trailing)
+                TextField("0.00", text: $estimatedValueText)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .onSubmit {
+                        commitEstimatedValue()
+                    }
             }
+        }
+        .task {
+            purchasePriceText = formattedPurchasePriceText
+            estimatedValueText = formattedEstimatedValueText
+        }
+    }
+
+    private func commitPurchasePrice() {
+        if let value = Double(purchasePriceText), value > 0 {
+            item.purchasePrice = value
+        } else {
+            item.purchasePrice = nil
+            purchasePriceText = ""
+        }
+    }
+
+    private func commitEstimatedValue() {
+        if let value = Double(estimatedValueText), value > 0 {
+            item.estimatedValue = value
+        } else {
+            item.estimatedValue = nil
+            estimatedValueText = ""
         }
     }
 

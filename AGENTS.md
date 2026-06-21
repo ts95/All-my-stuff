@@ -39,6 +39,7 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 - SwiftUI-first, declarative UI — no UIKit/AppKit unless explicitly required
 - Files named after the primary type they contain (e.g., `Item.swift` contains `Item`)
 - One primary declaration per file where possible
+- **No messy inline code**: Extract formatting, computed values, and logic into named computed properties — never inline complex expressions in view bodies. Use multiple lines in computed properties for readability. The `??` operator is an exception and stays on the same line.
 
 ### Architecture
 
