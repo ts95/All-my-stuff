@@ -21,7 +21,6 @@ struct ItemProfileView: View {
             locationsSection
             pricesSection
             datePurchasedSection
-            deleteSection
         }
         .navigationTitle(item.name.isEmpty ? "Item" : item.name)
         .toolbar {
@@ -34,14 +33,14 @@ struct ItemProfileView: View {
                 }) {
                     Text("Delete")
                 }
+                .confirmationDialog("Delete \"\(item.name)\"?", isPresented: $showDeleteConfirmation) {
+                    Button("Delete", role: .destructive) {
+                        deleteItem()
+                    }
+                } message: {
+                    Text("This item will be permanently removed.")
+                }
             }
-        }
-        .confirmationDialog("Delete \"\(item.name)\"?", isPresented: $showDeleteConfirmation) {
-            Button("Delete", role: .destructive) {
-                deleteItem()
-            }
-        } message: {
-            Text("This item will be permanently removed.")
         }
     }
 
@@ -194,18 +193,7 @@ struct ItemProfileView: View {
         }
     }
 
-    // MARK: - Delete Section
 
-    private var deleteSection: some View {
-        Section {
-            Button(role: .destructive) {
-                showDeleteConfirmation = true
-            } label: {
-                Label("Delete Item", systemImage: "trash")
-                    .frame(maxWidth: .infinity)
-            }
-        }
-    }
 }
 
 extension ItemProfileView {
