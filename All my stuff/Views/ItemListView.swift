@@ -1,5 +1,5 @@
 import SwiftUI
-import SwiftData
+import Dependencies
 
 enum FilterOption: String, CaseIterable, Identifiable {
     case all, category, location
@@ -15,13 +15,12 @@ enum FilterOption: String, CaseIterable, Identifiable {
 }
 
 struct ItemListView: View {
-    @Query(sort: \Item.name, order: .forward) var items: [Item]
-    @Environment(\.modelContext) private var modelContext
-
+    @Dependency(\.itemStore) private var itemStore
     @State private var searchText = ""
     @State private var filterOption: FilterOption = .all
 
     var filteredItems: [Item] {
+        let items = itemStore.items
         if searchText.isEmpty {
             return items
         }
@@ -42,17 +41,16 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .category {
-                let categories = getUniqueCategories()
-                if categories.isEmpty {
+                let grouped = itemStore.grouped(by: \Item.categories)
+                if grouped.isEmpty {
                     Section {
                         Text("No items have categories yet.")
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(categories, id: \.persistentModelID) { cat in
-                        Section(cat.name) {
-                            let categoryItems = filteredItems.filter { ($0.categories ?? []).contains(cat) }.sorted { $0.name < $1.name }
-                            ForEach(categoryItems, id: \.persistentModelID) { item in
+                    ForEach(grouped, id: \.group.persistentModelID) { groupItems in
+                        Section(groupItems.group.name) {
+                            ForEach(groupItems.items, id: \.persistentModelID) { item in
                                 NavigationLink(value: item) {
                                     ItemRowView(item: item)
                                 }
@@ -61,17 +59,16 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .location {
-                let locations = getUniqueLocations()
-                if locations.isEmpty {
+                let grouped = itemStore.groupedByLocation()
+                if grouped.isEmpty {
                     Section {
                         Text("No items have locations yet.")
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(locations, id: \.persistentModelID) { loc in
-                        Section(loc.name) {
-                            let locationItems = filteredItems.filter { ($0.locations ?? []).contains(loc) }.sorted { $0.name < $1.name }
-                            ForEach(locationItems, id: \.persistentModelID) { item in
+                    ForEach(grouped, id: \.group.persistentModelID) { groupItems in
+                        Section(groupItems.group.name) {
+                            ForEach(groupItems.items, id: \.persistentModelID) { item in
                                 NavigationLink(value: item) {
                                     ItemRowView(item: item)
                                 }
@@ -88,7 +85,7 @@ struct ItemListView: View {
                 }
             }
 
-            if items.isEmpty {
+            if itemStore.items.isEmpty {
                 Section {
                     Text("No items yet. Tap + to create one.")
                         .foregroundStyle(.secondary)
@@ -106,26 +103,13 @@ struct ItemListView: View {
                 }
             }
         }
-    }
-
-    private func getUniqueCategories() -> [ItemCategory] {
-        var set = Set<ItemCategory>()
-        for item in filteredItems {
-            for cat in item.categories ?? [] {
-                set.insert(cat)
+        .task {
+            do {
+                try itemStore.fetchAll()
+            } catch {
+                print("Failed to fetch items: \(error)")
             }
         }
-        return set.sorted { $0.name < $1.name }
-    }
-
-    private func getUniqueLocations() -> [ItemLocation] {
-        var set = Set<ItemLocation>()
-        for item in filteredItems {
-            for loc in item.locations ?? [] {
-                set.insert(loc)
-            }
-        }
-        return set.sorted { $0.name < $1.name }
     }
 }
 
@@ -160,5 +144,5 @@ struct ItemRowView: View {
 }
 
 #Preview {
-    makeContentViewPreview()
+    ContentView()
 }
