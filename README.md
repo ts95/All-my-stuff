@@ -34,17 +34,21 @@ Development is powered by **OpenCode** with the **superpowers** plugin, alongsid
 ```
 All my stuff/
 ├── Models/
-│   ├── Item.swift          // Core inventory item model
-│   ├── Category.swift      // Item category
-│   ├── Location.swift      // Storage location
-│   └── PriceState.swift    // Enum: .confirmed, .assumed, .unknown
+│   ├── Item.swift            // Core inventory item model
+│   ├── ItemCategory.swift    // Item category
+│   ├── ItemLocation.swift    // Storage location
+│   └── PriceState.swift      // Enum: .confirmed, .assumed, .unknown
 ├── Views/
 │   ├── ContentView.swift           // Split-view coordinator
 │   ├── ItemListView.swift          // Main list with search & grouping
-│   ├── ItemDetailView.swift        // Detail/edit form
+│   ├── ItemProfileView.swift       // Detail/profile view for a single item
+│   ├── ItemFormSheet.swift         // Sheet for creating/editing items
 │   ├── CategoryPickerView.swift    // Add/remove categories
 │   └── LocationPickerView.swift    // Add/remove locations
 ├── Services/
-│   └── AssetStorage.swift  // Photo/image handling
+│   ├── AssetStorage.swift  // Photo/image handling
+│   └── PreviewHelper.swift // SwiftUI preview factory helper
+├── All_my_stuffTests/      // Unit, integration, and smoke tests
+├── All_my_stuffUITests/    // UI tests
 └── All_my_stuffApp.swift   // ModelContainer + root view
 ```
