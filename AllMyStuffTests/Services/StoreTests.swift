@@ -1,6 +1,7 @@
 import Testing
 @testable import AllMyStuff
 
+@MainActor
 @Suite("ItemStore Tests")
 struct ItemStoreTests {
 
@@ -72,6 +73,7 @@ struct ItemStoreTests {
     }
 }
 
+@MainActor
 @Suite("CategoryStore Tests")
 struct CategoryStoreTests {
 
@@ -86,6 +88,7 @@ struct CategoryStoreTests {
     }
 }
 
+@MainActor
 @Suite("LocationStore Tests")
 struct LocationStoreTests {
 
