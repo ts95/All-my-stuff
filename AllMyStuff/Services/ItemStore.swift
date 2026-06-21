@@ -112,6 +112,10 @@ final class ItemStore: EntityStoreProtocol {
         phone.categories = [personal]
         phone.locations = [desk, bag]
 
+        laptop.status = ItemStatus.keep.rawValue
+        headphones.status = ItemStatus.sell.rawValue
+        phone.status = ItemStatus.undecided.rawValue
+
         store.items = [laptop, headphones, phone]
         return store
     }
