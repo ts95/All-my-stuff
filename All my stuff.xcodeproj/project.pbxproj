@@ -18,37 +18,37 @@
 			containerPortal = 29F268F12FE71C4800D1CF7E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 29F268F82FE71C4800D1CF7E;
-			remoteInfo = "All my stuff";
+			remoteInfo = "AllMyStuff";
 		};
 		29F269112FE71C4900D1CF7E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29F268F12FE71C4800D1CF7E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 29F268F82FE71C4800D1CF7E;
-			remoteInfo = "All my stuff";
+			remoteInfo = "AllMyStuff";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		29F268F92FE71C4800D1CF7E /* All my stuff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "All my stuff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		29F269062FE71C4900D1CF7E /* All my stuffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "All my stuffTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		29F269102FE71C4900D1CF7E /* All my stuffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "All my stuffUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F268F92FE71C4800D1CF7E /* AllMyStuff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AllMyStuff.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllMyStuffTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllMyStuffUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		29F268FB2FE71C4800D1CF7E /* All my stuff */ = {
+		29F268FB2FE71C4800D1CF7E /* AllMyStuff */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "All my stuff";
+			path = "AllMyStuff";
 			sourceTree = "<group>";
 		};
-		29F269092FE71C4900D1CF7E /* All my stuffTests */ = {
+		29F269092FE71C4900D1CF7E /* AllMyStuffTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "All my stuffTests";
+			path = "AllMyStuffTests";
 			sourceTree = "<group>";
 		};
-		29F269132FE71C4900D1CF7E /* All my stuffUITests */ = {
+		29F269132FE71C4900D1CF7E /* AllMyStuffUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "All my stuffUITests";
+			path = "AllMyStuffUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -84,9 +84,9 @@
 		29F268F02FE71C4800D1CF7E = {
 			isa = PBXGroup;
 			children = (
-				29F268FB2FE71C4800D1CF7E /* All my stuff */,
-				29F269092FE71C4900D1CF7E /* All my stuffTests */,
-				29F269132FE71C4900D1CF7E /* All my stuffUITests */,
+				29F268FB2FE71C4800D1CF7E /* AllMyStuff */,
+				29F269092FE71C4900D1CF7E /* AllMyStuffTests */,
+				29F269132FE71C4900D1CF7E /* AllMyStuffUITests */,
 				29F268FA2FE71C4800D1CF7E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -94,9 +94,9 @@
 		29F268FA2FE71C4800D1CF7E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				29F268F92FE71C4800D1CF7E /* All my stuff.app */,
-				29F269062FE71C4900D1CF7E /* All my stuffTests.xctest */,
-				29F269102FE71C4900D1CF7E /* All my stuffUITests.xctest */,
+				29F268F92FE71C4800D1CF7E /* AllMyStuff.app */,
+				29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */,
+				29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,9 +104,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		29F268F82FE71C4800D1CF7E /* All my stuff */ = {
+		29F268F82FE71C4800D1CF7E /* AllMyStuff */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29F2691A2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuff" */;
+			buildConfigurationList = 29F2691A2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuff" */;
 			buildPhases = (
 				29F268F52FE71C4800D1CF7E /* Sources */,
 				29F268F62FE71C4800D1CF7E /* Frameworks */,
@@ -117,20 +117,20 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				29F268FB2FE71C4800D1CF7E /* All my stuff */,
+				29F268FB2FE71C4800D1CF7E /* AllMyStuff */,
 			);
-			name = "All my stuff";
+			name = "AllMyStuff";
 			packageProductDependencies = (
 				294B77E62FE7EB1D00ABC099 /* Dependencies */,
 				294B77E82FE7EB1D00ABC099 /* DependenciesMacros */,
 			);
-			productName = "All my stuff";
-			productReference = 29F268F92FE71C4800D1CF7E /* All my stuff.app */;
+			productName = "AllMyStuff";
+			productReference = 29F268F92FE71C4800D1CF7E /* AllMyStuff.app */;
 			productType = "com.apple.product-type.application";
 		};
-		29F269052FE71C4900D1CF7E /* All my stuffTests */ = {
+		29F269052FE71C4900D1CF7E /* AllMyStuffTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29F2691D2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuffTests" */;
+			buildConfigurationList = 29F2691D2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuffTests" */;
 			buildPhases = (
 				29F269022FE71C4900D1CF7E /* Sources */,
 				29F269032FE71C4900D1CF7E /* Frameworks */,
@@ -142,19 +142,19 @@
 				29F269082FE71C4900D1CF7E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				29F269092FE71C4900D1CF7E /* All my stuffTests */,
+				29F269092FE71C4900D1CF7E /* AllMyStuffTests */,
 			);
-			name = "All my stuffTests";
+			name = "AllMyStuffTests";
 			packageProductDependencies = (
 				294B77EA2FE7EB1D00ABC099 /* DependenciesTestSupport */,
 			);
-			productName = "All my stuffTests";
-			productReference = 29F269062FE71C4900D1CF7E /* All my stuffTests.xctest */;
+			productName = "AllMyStuffTests";
+			productReference = 29F269062FE71C4900D1CF7E /* AllMyStuffTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		29F2690F2FE71C4900D1CF7E /* All my stuffUITests */ = {
+		29F2690F2FE71C4900D1CF7E /* AllMyStuffUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29F269202FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuffUITests" */;
+			buildConfigurationList = 29F269202FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuffUITests" */;
 			buildPhases = (
 				29F2690C2FE71C4900D1CF7E /* Sources */,
 				29F2690D2FE71C4900D1CF7E /* Frameworks */,
@@ -166,13 +166,13 @@
 				29F269122FE71C4900D1CF7E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				29F269132FE71C4900D1CF7E /* All my stuffUITests */,
+				29F269132FE71C4900D1CF7E /* AllMyStuffUITests */,
 			);
-			name = "All my stuffUITests";
+			name = "AllMyStuffUITests";
 			packageProductDependencies = (
 			);
-			productName = "All my stuffUITests";
-			productReference = 29F269102FE71C4900D1CF7E /* All my stuffUITests.xctest */;
+			productName = "AllMyStuffUITests";
+			productReference = 29F269102FE71C4900D1CF7E /* AllMyStuffUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -198,7 +198,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 29F268F42FE71C4800D1CF7E /* Build configuration list for PBXProject "All my stuff" */;
+			buildConfigurationList = 29F268F42FE71C4800D1CF7E /* Build configuration list for PBXProject "AllMyStuff" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -215,9 +215,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				29F268F82FE71C4800D1CF7E /* All my stuff */,
-				29F269052FE71C4900D1CF7E /* All my stuffTests */,
-				29F2690F2FE71C4900D1CF7E /* All my stuffUITests */,
+				29F268F82FE71C4800D1CF7E /* AllMyStuff */,
+				29F269052FE71C4900D1CF7E /* AllMyStuffTests */,
+				29F2690F2FE71C4900D1CF7E /* AllMyStuffUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -273,12 +273,12 @@
 /* Begin PBXTargetDependency section */
 		29F269082FE71C4900D1CF7E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 29F268F82FE71C4800D1CF7E /* All my stuff */;
+			target = 29F268F82FE71C4800D1CF7E /* AllMyStuff */;
 			targetProxy = 29F269072FE71C4900D1CF7E /* PBXContainerItemProxy */;
 		};
 		29F269122FE71C4900D1CF7E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 29F268F82FE71C4800D1CF7E /* All my stuff */;
+			target = 29F268F82FE71C4800D1CF7E /* AllMyStuff */;
 			targetProxy = 29F269112FE71C4900D1CF7E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -412,7 +412,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "All my stuff/All my stuff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AllMyStuff/AllMyStuff.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
@@ -448,7 +448,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "All my stuff/All my stuff.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "AllMyStuff/AllMyStuff.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
@@ -497,7 +497,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/All my stuff.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/All my stuff";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AllMyStuff.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AllMyStuff";
 			};
 			name = Debug;
 		};
@@ -519,7 +519,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/All my stuff.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/All my stuff";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AllMyStuff.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AllMyStuff";
 			};
 			name = Release;
 		};
@@ -539,7 +539,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "All my stuff";
+				TEST_TARGET_NAME = "AllMyStuff";
 			};
 			name = Debug;
 		};
@@ -559,14 +559,14 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "All my stuff";
+				TEST_TARGET_NAME = "AllMyStuff";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		29F268F42FE71C4800D1CF7E /* Build configuration list for PBXProject "All my stuff" */ = {
+		29F268F42FE71C4800D1CF7E /* Build configuration list for PBXProject "AllMyStuff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29F269182FE71C4A00D1CF7E /* Debug */,
@@ -575,7 +575,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29F2691A2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuff" */ = {
+		29F2691A2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29F2691B2FE71C4A00D1CF7E /* Debug */,
@@ -584,7 +584,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29F2691D2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuffTests" */ = {
+		29F2691D2FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuffTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29F2691E2FE71C4A00D1CF7E /* Debug */,
@@ -593,7 +593,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29F269202FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "All my stuffUITests" */ = {
+		29F269202FE71C4A00D1CF7E /* Build configuration list for PBXNativeTarget "AllMyStuffUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29F269212FE71C4A00D1CF7E /* Debug */,
