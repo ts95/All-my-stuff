@@ -56,6 +56,11 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 7. **SwiftData iOS 26 breaking changes**: `ModelContext(.inMemory())` removed — use `Schema` + `ModelConfiguration(isStoredInMemoryOnly: true)` instead; `context.insert()` is not variadic — call it once per object; `context.count(for:)` removed — use `try context.fetchCount(FetchDescriptor<T>())`
 8. **Navigation**: Always use `NavigationStack` with `NavigationPath` + `.navigationDestination(for:)` for push navigation — never `NavigationLink(destination:)`. On iPhone, `NavigationSplitView` collapses to single-column, so the list must be wrapped in a `NavigationStack` with a bound `NavigationPath` to support detail view push navigation. Track selected item separately for the split-view detail column and sync it with the path.
 
+## Documentation & Commit Workflow
+
+- **Update docs on completion**: Whenever a plan or feature is implemented, automatically update `README.md` and any other relevant documentation to reflect the changes.
+- **Commit and push**: After implementation and doc updates are complete, commit the changes and push to `main`.
+
 ## Installed Skills
 
 The following skills are available in `.agents/skills/` — invoke the relevant one before working on matching tasks:
