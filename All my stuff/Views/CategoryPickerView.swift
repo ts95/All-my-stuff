@@ -1,13 +1,12 @@
 import SwiftUI
-import SwiftData
+import Dependencies
 
 struct ItemCategoryPickerView: View {
     @Bindable var item: Item
-    @Query var allCategories: [ItemCategory]
-    @Environment(\.modelContext) private var modelContext
+    @Dependency(\.categoryStore) private var categoryStore
 
     var availableCategories: [ItemCategory] {
-        allCategories.filter { !categories.contains($0) }
+        categoryStore.items.filter { !categories.contains($0) }
     }
 
     var categories: [ItemCategory] {
@@ -17,12 +16,12 @@ struct ItemCategoryPickerView: View {
 
     var body: some View {
         Section("Categories") {
-            if categories.isEmpty && allCategories.isEmpty {
+            if categories.isEmpty && categoryStore.items.isEmpty {
                 Text("No categories yet.")
                     .foregroundStyle(.secondary)
             }
 
-            ForEach(categories, id: \.persistentModelID) { cat in
+            ForEach(categories, id: \.id) { cat in
                 HStack {
                     Text(cat.name)
                     Spacer()
@@ -35,7 +34,7 @@ struct ItemCategoryPickerView: View {
                 }
             }
 
-            ForEach(availableCategories, id: \.persistentModelID) { cat in
+            ForEach(availableCategories, id: \.id) { cat in
                 Button("+ \(cat.name)") {
                     var current = item.categories ?? []
                     current.append(cat)
@@ -50,7 +49,12 @@ struct ItemCategoryPickerView: View {
                 set: { newValue in
                     if !newValue.trimmingCharacters(in: .whitespaces).isEmpty {
                         let newCat = ItemCategory(name: newValue.trimmingCharacters(in: .whitespaces))
-                        modelContext.insert(newCat)
+                        do {
+                            try categoryStore.insert(newCat)
+                            try categoryStore.save(newCat)
+                        } catch {
+                            print("Failed to create category: \(error)")
+                        }
                         var current = item.categories ?? []
                         current.append(newCat)
                         item.categories = current
@@ -59,6 +63,13 @@ struct ItemCategoryPickerView: View {
             ))
             .submitLabel(.done)
             .textFieldStyle(.roundedBorder)
+        }
+        .task {
+            do {
+                try categoryStore.fetchAll()
+            } catch {
+                print("Failed to fetch categories: \(error)")
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ struct ItemListView: View {
         List {
             if filterOption == .all {
                 Section {
-                    ForEach(filteredItems, id: \.persistentModelID) { item in
+                    ForEach(filteredItems, id: \.id) { item in
                         NavigationLink(value: item) {
                             ItemRowView(item: item)
                         }
@@ -48,9 +48,9 @@ struct ItemListView: View {
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(grouped, id: \.group.persistentModelID) { groupItems in
+                    ForEach(grouped, id: \.group.id) { groupItems in
                         Section(groupItems.group.name) {
-                            ForEach(groupItems.items, id: \.persistentModelID) { item in
+                            ForEach(groupItems.items, id: \.id) { item in
                                 NavigationLink(value: item) {
                                     ItemRowView(item: item)
                                 }
@@ -66,9 +66,9 @@ struct ItemListView: View {
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(grouped, id: \.group.persistentModelID) { groupItems in
+                    ForEach(grouped, id: \.group.id) { groupItems in
                         Section(groupItems.group.name) {
-                            ForEach(groupItems.items, id: \.persistentModelID) { item in
+                            ForEach(groupItems.items, id: \.id) { item in
                                 NavigationLink(value: item) {
                                     ItemRowView(item: item)
                                 }

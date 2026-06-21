@@ -1,12 +1,12 @@
 import SwiftUI
-import SwiftData
+import Dependencies
 
 struct ContentView: View {
     @State private var navigationPath = NavigationPath()
     @State private var selectedItem: Item?
     @State private var creatingItem: Item?
     @State private var editingItem: Item?
-    @Environment(\.modelContext) private var modelContext
+    @Dependency(\.itemStore) private var itemStore
 
     var body: some View {
         NavigationSplitView {
@@ -71,11 +71,16 @@ struct ContentView: View {
 
     private func createNewItem() {
         let newItem = Item(name: "New Item", datePurchased: Date())
-        modelContext.insert(newItem)
+        do {
+            try itemStore.insert(newItem)
+            try itemStore.save(newItem)
+        } catch {
+            print("Failed to create item: \(error)")
+        }
         creatingItem = newItem
     }
 }
 
 #Preview {
-    makeContentViewPreview()
+    ContentView()
 }

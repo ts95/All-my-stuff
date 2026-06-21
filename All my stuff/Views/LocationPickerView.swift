@@ -1,13 +1,12 @@
 import SwiftUI
-import SwiftData
+import Dependencies
 
 struct ItemLocationPickerView: View {
     @Bindable var item: Item
-    @Query var allLocations: [ItemLocation]
-    @Environment(\.modelContext) private var modelContext
+    @Dependency(\.locationStore) private var locationStore
 
     var availableLocations: [ItemLocation] {
-        allLocations.filter { !locations.contains($0) }
+        locationStore.items.filter { !locations.contains($0) }
     }
 
     var locations: [ItemLocation] {
@@ -17,12 +16,12 @@ struct ItemLocationPickerView: View {
 
     var body: some View {
         Section("Locations") {
-            if locations.isEmpty && allLocations.isEmpty {
+            if locations.isEmpty && locationStore.items.isEmpty {
                 Text("No locations yet.")
                     .foregroundStyle(.secondary)
             }
 
-            ForEach(locations, id: \.persistentModelID) { loc in
+            ForEach(locations, id: \.id) { loc in
                 HStack {
                     Text(loc.name)
                     Spacer()
@@ -35,7 +34,7 @@ struct ItemLocationPickerView: View {
                 }
             }
 
-            ForEach(availableLocations, id: \.persistentModelID) { loc in
+            ForEach(availableLocations, id: \.id) { loc in
                 Button("+ \(loc.name)") {
                     var current = item.locations ?? []
                     current.append(loc)
@@ -50,7 +49,12 @@ struct ItemLocationPickerView: View {
                 set: { newValue in
                     if !newValue.trimmingCharacters(in: .whitespaces).isEmpty {
                         let newLoc = ItemLocation(name: newValue.trimmingCharacters(in: .whitespaces))
-                        modelContext.insert(newLoc)
+                        do {
+                            try locationStore.insert(newLoc)
+                            try locationStore.save(newLoc)
+                        } catch {
+                            print("Failed to create location: \(error)")
+                        }
                         var current = item.locations ?? []
                         current.append(newLoc)
                         item.locations = current
@@ -59,6 +63,13 @@ struct ItemLocationPickerView: View {
             ))
             .submitLabel(.done)
             .textFieldStyle(.roundedBorder)
+        }
+        .task {
+            do {
+                try locationStore.fetchAll()
+            } catch {
+                print("Failed to fetch locations: \(error)")
+            }
         }
     }
 }

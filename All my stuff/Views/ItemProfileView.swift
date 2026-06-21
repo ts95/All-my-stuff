@@ -1,10 +1,10 @@
 import SwiftUI
-import SwiftData
 import PhotosUI
+import Dependencies
 
 struct ItemProfileView: View {
     @Bindable var item: Item
-    @Environment(\.modelContext) private var modelContext
+    @Dependency(\.itemStore) private var itemStore
     let onEdit: () -> Void
     let onDelete: () -> Void
 
@@ -118,7 +118,7 @@ struct ItemProfileView: View {
         Section("Categories") {
             if let categories = item.categories, !categories.isEmpty {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 8)], alignment: .leading) {
-                    ForEach(categories, id: \.persistentModelID) { cat in
+                    ForEach(categories, id: \.id) { cat in
                         Text(cat.name)
                             .font(.subheadline)
                             .padding(.horizontal, 12)
@@ -140,7 +140,7 @@ struct ItemProfileView: View {
         Section("Locations") {
             if let locations = item.locations, !locations.isEmpty {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 8)], alignment: .leading) {
-                    ForEach(locations, id: \.persistentModelID) { loc in
+                    ForEach(locations, id: \.id) { loc in
                         Text(loc.name)
                             .font(.subheadline)
                             .padding(.horizontal, 12)
@@ -198,11 +198,24 @@ struct ItemProfileView: View {
 
 extension ItemProfileView {
     private func deleteItem() {
-        modelContext.delete(item)
+        do {
+            try itemStore.delete(item)
+        } catch {
+            print("Failed to delete item: \(error)")
+        }
         onDelete()
     }
 }
 
 #Preview {
-    makeProfilePreview()
+    let store = ItemStore.preview()
+    let item = store.items.first ?? Item(name: "Laptop", datePurchased: Date())
+
+    return NavigationStack {
+        ItemProfileView(
+            item: item,
+            onEdit: {},
+            onDelete: {}
+        )
+    }
 }

@@ -1,10 +1,10 @@
 import SwiftUI
-import SwiftData
 import PhotosUI
+import Dependencies
 
 struct ItemFormSheet: View {
     @Bindable var item: Item
-    @Environment(\.modelContext) private var modelContext
+    @Dependency(\.itemStore) private var itemStore
     @Environment(\.dismiss) private var dismiss
 
     var isCreateMode: Bool
@@ -37,7 +37,11 @@ struct ItemFormSheet: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         if isCreateMode {
-                            modelContext.delete(item)
+                            do {
+                                try itemStore.delete(item)
+                            } catch {
+                                print("Failed to delete item: \(error)")
+                            }
                         }
                         dismiss()
                     }
@@ -48,7 +52,7 @@ struct ItemFormSheet: View {
                         Task { @MainActor in
                             isSaving = true
                             do {
-                                try modelContext.save()
+                                try itemStore.save(item)
                                 onDone()
                                 dismiss()
                             } catch {
@@ -190,9 +194,8 @@ struct ItemFormSheet: View {
 }
 
 #Preview {
-    let (container, context) = makePreviewContainer()
-    let item = Item(name: "Tablet", datePurchased: Date())
-    context.insert(item)
+    let store = ItemStore.preview()
+    let item = store.items.first ?? Item(name: "Tablet", datePurchased: Date())
 
     return ItemFormSheet(
         item: item,
@@ -200,5 +203,4 @@ struct ItemFormSheet: View {
         onCancel: {},
         onDone: {}
     )
-    .modelContainer(container)
 }
