@@ -4,8 +4,6 @@ import SwiftData
 struct ContentView: View {
     @State private var navigationPath = NavigationPath()
     @State private var selectedItem: Item?
-    @State private var showCreateSheet = false
-    @State private var showEditSheet = false
     @State private var creatingItem: Item?
     @State private var editingItem: Item?
     @Environment(\.modelContext) private var modelContext
@@ -26,10 +24,7 @@ struct ContentView: View {
                     .navigationDestination(for: Item.self) { item in
                         ItemProfileView(
                             item: item,
-                            onEdit: {
-                                editingItem = item
-                                showEditSheet = true
-                            },
+                            onEdit: { editingItem = item },
                             onDelete: {
                                 navigationPath.removeLast()
                                 selectedItem = nil
@@ -42,10 +37,7 @@ struct ContentView: View {
             if let item = selectedItem {
                 ItemProfileView(
                     item: item,
-                    onEdit: {
-                        editingItem = item
-                        showEditSheet = true
-                    },
+                    onEdit: { editingItem = item },
                     onDelete: {
                         navigationPath.removeLast()
                         selectedItem = nil
@@ -56,32 +48,24 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .sheet(isPresented: $showCreateSheet) {
-            if let item = creatingItem {
-                ItemFormSheet(
-                    item: item,
-                    isCreateMode: true,
-                    onCancel: { showCreateSheet = false },
-                    onDone: {
-                        navigationPath.append(item)
-                        selectedItem = item
-                    }
-                )
-            } else {
-                EmptyView()
-            }
+        .sheet(item: $creatingItem) { item in
+            ItemFormSheet(
+                item: item,
+                isCreateMode: true,
+                onCancel: {},
+                onDone: {
+                    navigationPath.append(item)
+                    selectedItem = item
+                }
+            )
         }
-        .sheet(isPresented: $showEditSheet) {
-            if let item = editingItem {
-                ItemFormSheet(
-                    item: item,
-                    isCreateMode: false,
-                    onCancel: { showEditSheet = false },
-                    onDone: { showEditSheet = false }
-                )
-            } else {
-                EmptyView()
-            }
+        .sheet(item: $editingItem) { item in
+            ItemFormSheet(
+                item: item,
+                isCreateMode: false,
+                onCancel: {},
+                onDone: {}
+            )
         }
     }
 
@@ -89,7 +73,6 @@ struct ContentView: View {
         let newItem = Item(name: "New Item", datePurchased: Date())
         modelContext.insert(newItem)
         creatingItem = newItem
-        showCreateSheet = true
     }
 }
 
