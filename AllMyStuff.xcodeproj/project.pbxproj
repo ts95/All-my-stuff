@@ -418,7 +418,7 @@
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "All-my-stuff-Info.plist";
+				INFOPLIST_FILE = "AllMyStuff-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures of your items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos of your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -454,7 +454,7 @@
 				DEVELOPMENT_TEAM = FE6WMDZ3AJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "All-my-stuff-Info.plist";
+				INFOPLIST_FILE = "AllMyStuff-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures of your items";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos of your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
