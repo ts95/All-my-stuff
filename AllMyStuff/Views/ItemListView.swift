@@ -177,8 +177,16 @@ struct ItemListView: View {
 struct ItemRowView: View {
     let item: Item
 
+    private var currentStatus: ItemStatus {
+        ItemStatus(rawValue: item.status) ?? .undecided
+    }
+
     var body: some View {
         HStack {
+            Circle()
+                .fill(currentStatus.color)
+                .frame(width: 8, height: 8)
+
             if let photoData = item.photo, let uiImage = UIImage(data: photoData) {
                 Image(uiImage: uiImage)
                     .resizable()
