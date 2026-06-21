@@ -7,46 +7,50 @@ import SwiftData
 struct ItemProfileTests {
 
     @Test func item_profile_data_persists() async throws {
-        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: schema, configurations: [config])
-        let context = ModelContext(container)
+        await MainActor.run {
+            let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            let container = try! ModelContainer(for: schema, configurations: [config])
+            let itemStore = ItemStore.live(context: ModelContext(container))
+            let categoryStore = CategoryStore.live(context: ModelContext(container))
+            let locationStore = LocationStore.live(context: ModelContext(container))
 
-        let item = Item(name: "Laptop", datePurchased: Date())
-        item.notes = "2024 MacBook Pro"
-        item.purchasePrice = 1999.99
-        item.estimatedValue = 1500
-        let cat = ItemCategory(name: "Electronics")
-        let loc = ItemLocation(name: "Desk")
-        item.categories = [cat]
-        item.locations = [loc]
+            let item = Item(name: "Laptop", datePurchased: Date())
+            item.notes = "2024 MacBook Pro"
+            item.purchasePrice = 1999.99
+            item.estimatedValue = 1500
+            let cat = ItemCategory(name: "Electronics")
+            let loc = ItemLocation(name: "Desk")
 
-        context.insert(item)
-        context.insert(cat)
-        context.insert(loc)
-        try context.save()
+            try? itemStore.insert(item)
+            try? categoryStore.insert(cat)
+            try? locationStore.insert(loc)
+            item.categories = [cat]
+            item.locations = [loc]
+            try? itemStore.save(item)
+            try? itemStore.fetchAll()
 
-        let fd = FetchDescriptor<Item>()
-        let results = try context.fetch(fd)
-        #expect(results.count == 1)
-        #expect(results[0].name == "Laptop")
-        #expect(results[0].notes == "2024 MacBook Pro")
-        #expect(results[0].categories?.count == 1)
-        #expect(results[0].locations?.count == 1)
+            #expect(itemStore.items.count == 1)
+            #expect(itemStore.items.first?.name == "Laptop")
+            #expect(itemStore.items.first?.notes == "2024 MacBook Pro")
+            #expect(itemStore.items.first?.categories?.count == 1)
+            #expect(itemStore.items.first?.locations?.count == 1)
+        }
     }
 
     @Test func item_profile_no_photo_shows_default_state() async throws {
-        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: schema, configurations: [config])
-        let context = ModelContext(container)
+        await MainActor.run {
+            let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            let container = try! ModelContainer(for: schema, configurations: [config])
+            let store = ItemStore.live(context: ModelContext(container))
 
-        let item = Item(name: "Phone", datePurchased: Date())
-        context.insert(item)
-        try context.save()
+            let item = Item(name: "Phone", datePurchased: Date())
+            try? store.insert(item)
+            try? store.save(item)
+            try? store.fetchAll()
 
-        let fd = FetchDescriptor<Item>()
-        let results = try context.fetch(fd)
-        #expect(results[0].photo == nil)
+            #expect(store.items.first?.photo == nil)
+        }
     }
 }

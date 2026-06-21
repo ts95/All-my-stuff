@@ -7,42 +7,57 @@ import SwiftData
 struct ItemCRUDTests {
 
     @Test func create_update_delete_item() async throws {
-        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: schema, configurations: [config])
-        let context = ModelContext(container)
+        await MainActor.run {
+            let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            let container = try! ModelContainer(for: schema, configurations: [config])
+            let store = ItemStore.live(context: ModelContext(container))
 
-        let item = Item(name: "Camera")
-        context.insert(item)
-        #expect(try context.fetchCount(FetchDescriptor<Item>()) == 1)
+            let item = Item(name: "Camera", datePurchased: Date())
+            try? store.insert(item)
+            try? store.fetchAll()
+            #expect(store.items.count == 1)
 
-        item.name = "DSLR Camera"
-        item.purchasePrice = 1200
-        #expect(try context.fetch(FetchDescriptor<Item>())[0].name == "DSLR Camera")
+            item.name = "DSLR Camera"
+            item.purchasePrice = 1200
+            try? store.save(item)
+            #expect(store.items.first?.name == "DSLR Camera")
 
-        context.delete(item)
-        try context.save()
-        #expect(try context.fetchCount(FetchDescriptor<Item>()) == 0)
+            try? store.delete(item)
+            try? store.fetchAll()
+            #expect(store.items.isEmpty)
+        }
     }
 
     @Test func category_and_location_many_to_many() async throws {
-        let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: schema, configurations: [config])
-        let context = ModelContext(container)
+        await MainActor.run {
+            let schema = Schema([Item.self, ItemCategory.self, ItemLocation.self])
+            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            let container = try! ModelContainer(for: schema, configurations: [config])
+            let itemStore = ItemStore.live(context: ModelContext(container))
+            let categoryStore = CategoryStore.live(context: ModelContext(container))
+            let locationStore = LocationStore.live(context: ModelContext(container))
 
-        let item = Item(name: "Tablet")
-        let cat1 = ItemCategory(name: "Tech")
-        let cat2 = ItemCategory(name: "Personal")
-        let loc1 = ItemLocation(name: "Bag")
-        context.insert(item)
-        context.insert(cat1)
-        context.insert(cat2)
-        context.insert(loc1)
-        item.categories = [cat1, cat2]
-        item.locations = [loc1]
+            let item = Item(name: "Tablet", datePurchased: Date())
+            let cat1 = ItemCategory(name: "Tech")
+            let cat2 = ItemCategory(name: "Personal")
+            let loc1 = ItemLocation(name: "Bag")
 
-        #expect(try context.fetchCount(FetchDescriptor<ItemCategory>()) == 2)
-        #expect(try context.fetchCount(FetchDescriptor<ItemLocation>()) == 1)
+            try? itemStore.insert(item)
+            try? categoryStore.insert(cat1)
+            try? categoryStore.insert(cat2)
+            try? locationStore.insert(loc1)
+
+            item.categories = [cat1, cat2]
+            item.locations = [loc1]
+            try? itemStore.save(item)
+
+            try? itemStore.fetchAll()
+            try? categoryStore.fetchAll()
+            try? locationStore.fetchAll()
+
+            #expect(categoryStore.items.count == 2)
+            #expect(locationStore.items.count == 1)
+        }
     }
 }
