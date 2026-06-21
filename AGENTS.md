@@ -15,7 +15,7 @@
 | Create a directory | `xcode_XcodeMakeDir` | `mkdir` |
 | Check compiler issues | `xcode_XcodeRefreshCodeIssuesInFile` | — |
 | Build the app | `xcode_BuildProject` | `xcodebuild` |
-| Run tests | `xcode_RunAllTests` / `xcode_RunSomeTests` | `xcodebuild build-for-testing` |
+| Run tests | `xcodebuild test-without-building` (CLI) | `xcode_RunAllTests` / `xcode_RunSomeTests` (MCP has simulator cloning bug) |
 | Get test list | `xcode_GetTestList` | — |
 | Render a SwiftUI preview | `xcode_RenderPreview` | — |
 
@@ -55,8 +55,11 @@ Only fall back to generic tools when the Xcode MCP cannot express what you need 
 6. **Never use git worktrees** — the Xcode MCP can only operate on the repository where `.xcodeproj` lives; worktrees break file discovery and tool access. Work directly on feature branches instead.
 7. **SwiftData iOS 26 breaking changes**: `ModelContext(.inMemory())` removed — use `Schema` + `ModelConfiguration(isStoredInMemoryOnly: true)` instead; `context.insert()` is not variadic — call it once per object; `context.count(for:)` removed — use `try context.fetchCount(FetchDescriptor<T>())`
 8. **SwiftData does not support enums with associated values**: SwiftData's internal coder fails at runtime with "Unable to decode this value" for enums like `PriceState` that have associated values (e.g., `.confirmed(Double)`), even with a custom `Codable` implementation. Use primitive `Double?` properties instead of enums with associated values for SwiftData model properties.
-8. **Navigation**: Always use `NavigationStack` with `NavigationPath` + `.navigationDestination(for:)` for push navigation — never `NavigationLink(destination:)`. On iPhone, `NavigationSplitView` collapses to single-column, so the list must be wrapped in a `NavigationStack` with a bound `NavigationPath` to support detail view push navigation. Track selected item separately for the split-view detail column and sync it with the path.
-9. **iOS 26 confirmationDialog**: `confirmationDialog` is presented as a tooltip in iOS 26 — always apply the modifier on the actual button that's presenting it, not on a parent container.
+9. **Navigation**: Always use `NavigationStack` with `NavigationPath` + `.navigationDestination(for:)` for push navigation — never `NavigationLink(destination:)`. On iPhone, `NavigationSplitView` collapses to single-column, so the list must be wrapped in a `NavigationStack` with a bound `NavigationPath` to support detail view push navigation. Track selected item separately for the split-view detail column and sync it with the path.
+10. **iOS 26 confirmationDialog**: `confirmationDialog` is presented as a tooltip in iOS 26 — always apply the modifier on the actual button that's presenting it, not on a parent container.
+11. **No SwiftData in Views**: Views must never import `SwiftData` or access `@Environment(\.modelContext)` or `@Query`. All data access goes through `@Observable` stores injected via `@Dependency(\.)` from `swift-dependencies`. Live stores wrap SwiftData; preview stores provide mock data automatically via `previewValue`; test stores provide deterministic fixtures via `testValue`.
+12. **swift-dependencies for injection**: Use `@Dependency(\.)` for all dependency injection. Conform to `DependencyKey` with `liveValue`, `previewValue`, and `testValue`. Register in `DependencyValues`. Call `prepareDependencies` at app entry point. Never use `@Dependency` on `static` properties. Always mark `@ObservationIgnored` when using `@Dependency` inside `@Observable` classes.
+13. **Previews must not require container setup**: SwiftUI Previews should work with zero setup — no `.modelContainer()`, no in-memory containers. The `previewValue` of each dependency provides sample data automatically.
 
 ## Documentation & Commit Workflow
 
@@ -79,3 +82,4 @@ The following skills are available in `.agents/skills/` — invoke the relevant 
 | `swift-architecture` | Choosing MV/MVVM/MVI/TCA/Clean Architecture, evaluating architecture fit, migrating patterns |
 | `swift-language` | Modern Swift idioms: if/switch expressions, typed throws, property wrappers, opaque/existential types, Codable, Regex builders, collection APIs |
 | `swift-api-design-guidelines` | Naming conventions, argument labels, documentation comments, protocol naming, call site clarity |
+| `swift-dependencies` | @Dependency, DependencyKey, withDependencies, prepareDependencies, context auto-detection (.live/.preview/.test), SwiftUI integration, escaping closures, testing overrides |
