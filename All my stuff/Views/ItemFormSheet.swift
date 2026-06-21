@@ -36,13 +36,6 @@ struct ItemFormSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        if isCreateMode {
-                            do {
-                                try itemStore.delete(item)
-                            } catch {
-                                print("Failed to delete item: \(error)")
-                            }
-                        }
                         dismiss()
                     }
                 }
@@ -52,6 +45,9 @@ struct ItemFormSheet: View {
                         Task { @MainActor in
                             isSaving = true
                             do {
+                                if isCreateMode {
+                                    try itemStore.insert(item)
+                                }
                                 try itemStore.save(item)
                                 onDone()
                                 dismiss()

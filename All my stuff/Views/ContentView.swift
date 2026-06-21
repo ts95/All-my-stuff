@@ -70,14 +70,7 @@ struct ContentView: View {
     }
 
     private func createNewItem() {
-        let newItem = Item(name: "New Item", datePurchased: Date())
-        do {
-            try itemStore.insert(newItem)
-            try itemStore.save(newItem)
-        } catch {
-            print("Failed to create item: \(error)")
-        }
-        creatingItem = newItem
+        creatingItem = Item(name: "", datePurchased: Date())
     }
 }
 
