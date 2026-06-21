@@ -137,10 +137,7 @@ struct ItemFormSheet: View {
 
     private var nameSection: some View {
         Section("Name") {
-            TextField("Item name", text: Binding(
-                get: { item.name },
-                set: { item.name = $0 }
-            ))
+            TextField("Item name", text: $item.name)
             .autocapitalization(.sentences)
 
             if isCreateMode && !isValid {
@@ -155,10 +152,7 @@ struct ItemFormSheet: View {
 
     private var notesSection: some View {
         Section("Notes") {
-            TextEditor(text: Binding(
-                get: { item.notes },
-                set: { item.notes = $0 }
-            ))
+            TextEditor(text: $item.notes)
             .frame(minHeight: 80)
         }
     }
