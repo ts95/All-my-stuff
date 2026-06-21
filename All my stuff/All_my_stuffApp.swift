@@ -17,6 +17,10 @@ struct All_my_stuffApp: App {
         return try! ModelContainer(for: schema, configurations: [config])
     }()
 
+    init() {
+        prepareDependencies(modelContainer: sharedModelContainer)
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
