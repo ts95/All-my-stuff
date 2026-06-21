@@ -1,8 +1,9 @@
 import Foundation
 import SwiftData
 
+@MainActor
 @Observable
-final class ItemStore: EntityStoreProtocol, @unchecked Sendable {
+final class ItemStore: EntityStoreProtocol {
     var items: [Item] = []
     var isLoading: Bool = false
     var error: Error? = nil

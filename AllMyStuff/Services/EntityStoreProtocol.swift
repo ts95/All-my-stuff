@@ -1,6 +1,6 @@
 import Foundation
 
-protocol EntityStoreProtocol: Sendable {
+protocol EntityStoreProtocol {
     associatedtype Entity: Identifiable
 
     var items: [Entity] { get }

@@ -11,7 +11,10 @@ enum AppContainer {
 
 extension ItemStore: DependencyKey {
     static var liveValue: ItemStore {
-        .live(context: AppContainer.shared!.mainContext)
+        guard let container = AppContainer.shared else {
+            preconditionFailure("ItemStore.liveValue accessed before prepareDependencies() was called")
+        }
+        return .live(context: container.mainContext)
     }
     static var previewValue: ItemStore { .preview() }
     static var testValue: ItemStore { .test() }
@@ -28,7 +31,10 @@ extension DependencyValues {
 
 extension CategoryStore: DependencyKey {
     static var liveValue: CategoryStore {
-        .live(context: AppContainer.shared!.mainContext)
+        guard let container = AppContainer.shared else {
+            preconditionFailure("CategoryStore.liveValue accessed before prepareDependencies() was called")
+        }
+        return .live(context: container.mainContext)
     }
     static var previewValue: CategoryStore { .preview() }
     static var testValue: CategoryStore { .test() }
@@ -45,7 +51,10 @@ extension DependencyValues {
 
 extension LocationStore: DependencyKey {
     static var liveValue: LocationStore {
-        .live(context: AppContainer.shared!.mainContext)
+        guard let container = AppContainer.shared else {
+            preconditionFailure("LocationStore.liveValue accessed before prepareDependencies() was called")
+        }
+        return .live(context: container.mainContext)
     }
     static var previewValue: LocationStore { .preview() }
     static var testValue: LocationStore { .test() }
