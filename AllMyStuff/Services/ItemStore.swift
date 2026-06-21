@@ -79,34 +79,6 @@ final class ItemStore: EntityStoreProtocol {
         try fetchAll()
     }
 
-    // MARK: - Grouping
-
-    func grouped(by keyPath: KeyPath<Item, [ItemCategory]?>) -> [(group: ItemCategory, items: [Item])] {
-        var categoryItems: [ItemCategory: [Item]] = [:]
-        for item in items {
-            if let categories = item[keyPath: keyPath] {
-                for category in categories {
-                    categoryItems[category, default: []].append(item)
-                }
-            }
-        }
-        return categoryItems.map { (group: $0.key, items: $0.value.sorted { $0.name < $1.name }) }
-            .sorted { $0.group.name < $1.group.name }
-    }
-
-    func groupedByLocation() -> [(group: ItemLocation, items: [Item])] {
-        var locationItems: [ItemLocation: [Item]] = [:]
-        for item in items {
-            if let locations = item.locations {
-                for location in locations {
-                    locationItems[location, default: []].append(item)
-                }
-            }
-        }
-        return locationItems.map { (group: $0.key, items: $0.value.sorted { $0.name < $1.name }) }
-            .sorted { $0.group.name < $1.group.name }
-    }
-
     // MARK: - Factory Methods
 
     static func live(context: ModelContext) -> ItemStore {

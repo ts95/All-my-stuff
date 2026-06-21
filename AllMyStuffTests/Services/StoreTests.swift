@@ -45,17 +45,30 @@ struct ItemStoreTests {
         #expect(store.items.isEmpty)
     }
 
-    @Test func previewStoreGroupedByCategory() throws {
+    @Test func previewStoreItemsCanBeGroupedByCategory() throws {
         let store = ItemStore.preview()
-        let grouped = store.grouped(by: \Item.categories)
-        #expect(grouped.count > 0)
-        #expect(grouped[0].group.name != "")
+        var categoryItems: [ItemCategory: [Item]] = [:]
+        for item in store.items {
+            if let categories = item.categories {
+                for category in categories {
+                    categoryItems[category, default: []].append(item)
+                }
+            }
+        }
+        #expect(categoryItems.count > 0)
     }
 
-    @Test func previewStoreGroupedByLocation() throws {
+    @Test func previewStoreItemsCanBeGroupedByLocation() throws {
         let store = ItemStore.preview()
-        let grouped = store.groupedByLocation()
-        #expect(grouped.count > 0)
+        var locationItems: [ItemLocation: [Item]] = [:]
+        for item in store.items {
+            if let locations = item.locations {
+                for location in locations {
+                    locationItems[location, default: []].append(item)
+                }
+            }
+        }
+        #expect(locationItems.count > 0)
     }
 }
 

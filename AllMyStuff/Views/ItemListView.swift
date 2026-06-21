@@ -30,6 +30,32 @@ struct ItemListView: View {
         }.sorted { $0.name < $1.name }
     }
 
+    var groupedByCategory: [(group: ItemCategory, items: [Item])] {
+        var categoryItems: [ItemCategory: [Item]] = [:]
+        for item in filteredItems {
+            if let categories = item.categories {
+                for category in categories {
+                    categoryItems[category, default: []].append(item)
+                }
+            }
+        }
+        return categoryItems.map { (group: $0.key, items: $0.value.sorted { $0.name < $1.name }) }
+            .sorted { $0.group.name < $1.group.name }
+    }
+
+    var groupedByLocation: [(group: ItemLocation, items: [Item])] {
+        var locationItems: [ItemLocation: [Item]] = [:]
+        for item in filteredItems {
+            if let locations = item.locations {
+                for location in locations {
+                    locationItems[location, default: []].append(item)
+                }
+            }
+        }
+        return locationItems.map { (group: $0.key, items: $0.value.sorted { $0.name < $1.name }) }
+            .sorted { $0.group.name < $1.group.name }
+    }
+
     var body: some View {
         List {
             if filterOption == .all {
@@ -41,7 +67,7 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .category {
-                let grouped = itemStore.grouped(by: \Item.categories)
+                let grouped = groupedByCategory
                 if grouped.isEmpty {
                     Section {
                         Text("No items have categories yet.")
@@ -59,7 +85,7 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .location {
-                let grouped = itemStore.groupedByLocation()
+                let grouped = groupedByLocation
                 if grouped.isEmpty {
                     Section {
                         Text("No items have locations yet.")
