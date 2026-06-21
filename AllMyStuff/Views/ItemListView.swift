@@ -18,6 +18,7 @@ struct ItemListView: View {
     @Dependency(\.itemStore) private var itemStore
     @State private var searchText = ""
     @State private var filterOption: FilterOption = .all
+    @State private var statusFilter: ItemStatus?
     @State private var fetchError: String?
 
     private var fetchErrorBinding: Binding<Bool> {
@@ -25,6 +26,10 @@ struct ItemListView: View {
             get: { fetchError != nil },
             set: { if !$0 { fetchError = nil } }
         )
+    }
+
+    private var statusFilterLabel: String {
+        statusFilter?.label ?? "All"
     }
 
     private var loadingOverlay: some View {
@@ -46,10 +51,16 @@ struct ItemListView: View {
     }
 
     var filteredItems: [Item] {
-        if searchText.isEmpty {
-            return itemStore.items
+        var items = itemStore.items
+
+        if let filter = statusFilter {
+            items = items.filter { $0.status == filter.rawValue }
         }
-        return itemStore.items.filter {
+
+        if searchText.isEmpty {
+            return items
+        }
+        return items.filter {
             $0.name.localizedCaseInsensitiveContains(searchText) ||
             $0.notes.localizedCaseInsensitiveContains(searchText)
         }.sorted { $0.name < $1.name }
@@ -148,6 +159,25 @@ struct ItemListView: View {
                 Picker("Filter", selection: $filterOption) {
                     ForEach(FilterOption.allCases) { option in
                         Text(option.label).tag(option)
+                    }
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button("All", action: { statusFilter = nil })
+                    Divider()
+                    ForEach(ItemStatus.allCases) { status in
+                        Button(status.label, action: { statusFilter = status })
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        if let filter = statusFilter {
+                            Circle()
+                                .fill(filter.color)
+                                .frame(width: 6, height: 6)
+                        }
+                        Text(statusFilterLabel)
+                            .font(.subheadline)
                     }
                 }
             }
