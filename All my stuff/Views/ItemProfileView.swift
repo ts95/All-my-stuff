@@ -11,6 +11,7 @@ struct ItemProfileView: View {
     @State private var photoSelection: PhotosPickerItem?
     @State private var isProcessingPhoto = false
     @State private var previewImage: Image?
+    @State private var showDeleteConfirmation = false
 
     var body: some View {
         Form {
@@ -29,12 +30,18 @@ struct ItemProfileView: View {
             }
             ToolbarItem(placement: .destructiveAction) {
                 Button(role: .destructive, action: {
-                    modelContext.delete(item)
-                    onDelete()
+                    showDeleteConfirmation = true
                 }) {
                     Text("Delete")
                 }
             }
+        }
+        .confirmationDialog("Delete \"\(item.name)\"?", isPresented: $showDeleteConfirmation) {
+            Button("Delete", role: .destructive) {
+                deleteItem()
+            }
+        } message: {
+            Text("This item will be permanently removed.")
         }
     }
 
@@ -192,13 +199,19 @@ struct ItemProfileView: View {
     private var deleteSection: some View {
         Section {
             Button(role: .destructive) {
-                modelContext.delete(item)
-                onDelete()
+                showDeleteConfirmation = true
             } label: {
                 Label("Delete Item", systemImage: "trash")
                     .frame(maxWidth: .infinity)
             }
         }
+    }
+}
+
+extension ItemProfileView {
+    private func deleteItem() {
+        modelContext.delete(item)
+        onDelete()
     }
 }
 

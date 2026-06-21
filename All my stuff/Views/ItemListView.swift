@@ -131,8 +131,6 @@ struct ItemListView: View {
 
 struct ItemRowView: View {
     let item: Item
-    @Environment(\.modelContext) private var modelContext
-    @State private var showConfirmDelete = false
 
     var body: some View {
         HStack {
@@ -157,20 +155,6 @@ struct ItemRowView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-        }
-        .swipeActions(edge: .trailing) {
-            Button(role: .destructive) {
-                showConfirmDelete = true
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
-        }
-        .confirmationDialog("Delete \"\(item.name)\"?", isPresented: $showConfirmDelete) {
-            Button("Delete", role: .destructive) {
-                modelContext.delete(item)
-            }
-        } message: {
-            Text("This item will be permanently removed.")
         }
     }
 }
