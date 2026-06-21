@@ -23,7 +23,7 @@ struct All_my_stuffApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ItemSplitView()
                 .modelContainer(sharedModelContainer)
         }
     }

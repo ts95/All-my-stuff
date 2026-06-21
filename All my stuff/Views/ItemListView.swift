@@ -144,5 +144,5 @@ struct ItemRowView: View {
 }
 
 #Preview {
-    ContentView()
+    ItemListView()
 }

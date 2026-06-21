@@ -1,7 +1,7 @@
 import SwiftUI
 import Dependencies
 
-struct ContentView: View {
+struct ItemSplitView: View {
     @State private var navigationPath = NavigationPath()
     @State private var selectedItem: Item?
     @State private var creatingItem: Item?
@@ -75,5 +75,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ItemSplitView()
 }
