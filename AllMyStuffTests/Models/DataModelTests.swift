@@ -75,6 +75,23 @@ struct DataModelTests {
         #expect(results[0].estimatedValue == 1500)
     }
 
+    @Test func itemStatus_hasCorrectCases() async throws {
+        #expect(ItemStatus.allCases.count == 5)
+        #expect(ItemStatus.undecided.rawValue == "undecided")
+        #expect(ItemStatus.keep.rawValue == "keep")
+        #expect(ItemStatus.sell.rawValue == "sell")
+        #expect(ItemStatus.donate.rawValue == "donate")
+        #expect(ItemStatus.trash.rawValue == "trash")
+    }
+
+    @Test func itemStatus_hasLabels() async throws {
+        #expect(ItemStatus.undecided.label == "Undecided")
+        #expect(ItemStatus.keep.label == "Keep")
+        #expect(ItemStatus.sell.label == "Sell")
+        #expect(ItemStatus.donate.label == "Donate")
+        #expect(ItemStatus.trash.label == "Trash")
+    }
+
     @Test func item_nil_prices_default() async throws {
         let item = Item(name: "Phone", datePurchased: Date())
         context.insert(item)
