@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @State private var navigationPath = NavigationPath()
     @State private var selectedItem: Item?
     @State private var showCreateSheet = false
     @State private var showEditSheet = false
@@ -11,16 +12,32 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            ItemListView(selectedItem: $selectedItem)
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button {
-                            createNewItem()
-                        } label: {
-                            Image(systemName: "plus")
+            NavigationStack(path: $navigationPath) {
+                ItemListView()
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button {
+                                createNewItem()
+                            } label: {
+                                Image(systemName: "plus")
+                            }
                         }
                     }
-                }
+                    .navigationDestination(for: Item.self) { item in
+                        ItemProfileView(
+                            item: item,
+                            onEdit: {
+                                editingItem = item
+                                showEditSheet = true
+                            },
+                            onDelete: {
+                                navigationPath.removeLast()
+                                selectedItem = nil
+                            }
+                        )
+                        .onAppear { selectedItem = item }
+                    }
+            }
         } detail: {
             if let item = selectedItem {
                 ItemProfileView(
@@ -29,7 +46,10 @@ struct ContentView: View {
                         editingItem = item
                         showEditSheet = true
                     },
-                    onDelete: { selectedItem = nil }
+                    onDelete: {
+                        navigationPath.removeLast()
+                        selectedItem = nil
+                    }
                 )
             } else {
                 Text("Select or create an item")
@@ -42,7 +62,10 @@ struct ContentView: View {
                     item: item,
                     isCreateMode: true,
                     onCancel: { showCreateSheet = false },
-                    onDone: { selectedItem = item }
+                    onDone: {
+                        navigationPath.append(item)
+                        selectedItem = item
+                    }
                 )
             } else {
                 EmptyView()

@@ -63,16 +63,18 @@ struct ItemFormSheetModelTests {
     }
 
     @Test func photo_resize_preserves_data() async throws {
-        let uiImage = UIImage(systemName: "photo")!
-        guard let data = uiImage.jpegData(compressionQuality: 0.8) else {
-            Issue.record("failed to create test image data")
-            return
-        }
+        await MainActor.run {
+            let uiImage = UIImage(systemName: "photo")!
+            guard let data = uiImage.jpegData(compressionQuality: 0.8) else {
+                Issue.record("failed to create test image data")
+                return
+            }
 
-        let resized = AssetStorage.resizeImageData(data, maxDimension: 1024)
-        #expect(resized != nil)
-        if let r = resized {
-            #expect(r.count > 0)
+            let resized = AssetStorage.resizeImageData(data, maxDimension: 1024)
+            #expect(resized != nil)
+            if let r = resized {
+                #expect(r.count > 0)
+            }
         }
     }
 }

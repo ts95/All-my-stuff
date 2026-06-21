@@ -63,32 +63,20 @@ struct DataModelTests {
     }
 
     @Test func priceState_confirmedValue() async throws {
-        var price = PriceState.confirmed(999.99)
-        switch price {
-        case .confirmed(let value):
-            #expect(value == 999.99)
-        default:
-            Issue.record("expected confirmed")
-        }
+        let price = PriceState.confirmed(999.99)
+        #expect(price.displayValue == "999.99")
+        #expect(price.numericValue == 999.99)
     }
 
     @Test func priceState_assumedValue() async throws {
-        var price = PriceState.assumed(500)
-        switch price {
-        case .assumed(let value):
-            #expect(value == 500)
-        default:
-            Issue.record("expected assumed")
-        }
+        let price = PriceState.assumed(500)
+        #expect(price.displayValue == "500.00")
+        #expect(price.numericValue == 500)
     }
 
     @Test func priceState_unknown() async throws {
-        var price = PriceState.unknown
-        switch price {
-        case .unknown:
-            break
-        default:
-            Issue.record("expected unknown")
-        }
+        let price = PriceState.unknown
+        #expect(price.displayValue == "Unknown")
+        #expect(price.numericValue == nil)
     }
 }

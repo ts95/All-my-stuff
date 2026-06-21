@@ -16,7 +16,6 @@ enum FilterOption: String, CaseIterable, Identifiable {
 
 struct ItemListView: View {
     @Query(sort: \Item.name, order: .forward) var items: [Item]
-    @Binding var selectedItem: Item?
     @Environment(\.modelContext) private var modelContext
 
     @State private var searchText = ""
@@ -37,7 +36,9 @@ struct ItemListView: View {
             if filterOption == .all {
                 Section {
                     ForEach(filteredItems, id: \.persistentModelID) { item in
-                        ItemRowView(item: item, onTap: { selectedItem = item })
+                        NavigationLink(value: item) {
+                            ItemRowView(item: item)
+                        }
                     }
                 }
             } else if filterOption == .category {
@@ -52,7 +53,9 @@ struct ItemListView: View {
                         Section(cat.name) {
                             let categoryItems = filteredItems.filter { ($0.categories ?? []).contains(cat) }.sorted { $0.name < $1.name }
                             ForEach(categoryItems, id: \.persistentModelID) { item in
-                                ItemRowView(item: item, onTap: { selectedItem = item })
+                                NavigationLink(value: item) {
+                                    ItemRowView(item: item)
+                                }
                             }
                         }
                     }
@@ -69,7 +72,9 @@ struct ItemListView: View {
                         Section(loc.name) {
                             let locationItems = filteredItems.filter { ($0.locations ?? []).contains(loc) }.sorted { $0.name < $1.name }
                             ForEach(locationItems, id: \.persistentModelID) { item in
-                                ItemRowView(item: item, onTap: { selectedItem = item })
+                                NavigationLink(value: item) {
+                                    ItemRowView(item: item)
+                                }
                             }
                         }
                     }
@@ -126,39 +131,33 @@ struct ItemListView: View {
 
 struct ItemRowView: View {
     let item: Item
-    var onTap: () -> Void
     @Environment(\.modelContext) private var modelContext
     @State private var showConfirmDelete = false
 
     var body: some View {
-        Button {
-            onTap()
-        } label: {
-            HStack {
-                if let photoData = item.photo, let uiImage = UIImage(data: photoData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 40, height: 40)
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                } else {
-                    Image(systemName: "photo")
-                        .font(.title2)
+        HStack {
+            if let photoData = item.photo, let uiImage = UIImage(data: photoData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 40, height: 40)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+            } else {
+                Image(systemName: "photo")
+                    .font(.title2)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 40, height: 40)
+            }
+            VStack(alignment: .leading) {
+                Text(item.name)
+                    .font(.headline)
+                if let date = item.datePurchased {
+                    Text(date, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
-                        .frame(width: 40, height: 40)
-                }
-                VStack(alignment: .leading) {
-                    Text(item.name)
-                        .font(.headline)
-                    if let date = item.datePurchased {
-                        Text(date, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
                 }
             }
         }
-        .buttonStyle(.plain)
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
                 showConfirmDelete = true
