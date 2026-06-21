@@ -20,11 +20,10 @@ struct ItemListView: View {
     @State private var filterOption: FilterOption = .all
 
     var filteredItems: [Item] {
-        let items = itemStore.items
         if searchText.isEmpty {
-            return items
+            return itemStore.items
         }
-        return items.filter {
+        return itemStore.items.filter {
             $0.name.localizedCaseInsensitiveContains(searchText) ||
             $0.notes.localizedCaseInsensitiveContains(searchText)
         }.sorted { $0.name < $1.name }
@@ -67,14 +66,13 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .category {
-                let grouped = groupedByCategory
-                if grouped.isEmpty {
+                if groupedByCategory.isEmpty {
                     Section {
                         Text("No items have categories yet.")
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(grouped, id: \.group.id) { groupItems in
+                    ForEach(groupedByCategory, id: \.group.id) { groupItems in
                         Section(groupItems.group.name) {
                             ForEach(groupItems.items, id: \.id) { item in
                                 NavigationLink(value: item) {
@@ -85,14 +83,13 @@ struct ItemListView: View {
                     }
                 }
             } else if filterOption == .location {
-                let grouped = groupedByLocation
-                if grouped.isEmpty {
+                if groupedByLocation.isEmpty {
                     Section {
                         Text("No items have locations yet.")
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    ForEach(grouped, id: \.group.id) { groupItems in
+                    ForEach(groupedByLocation, id: \.group.id) { groupItems in
                         Section(groupItems.group.name) {
                             ForEach(groupItems.items, id: \.id) { item in
                                 NavigationLink(value: item) {
