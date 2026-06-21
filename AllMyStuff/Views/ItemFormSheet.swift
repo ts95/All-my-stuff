@@ -202,6 +202,10 @@ struct ItemFormSheet: View {
             purchasePriceText = formattedPurchasePriceText
             estimatedValueText = formattedEstimatedValueText
         }
+        .onDisappear {
+            commitPurchasePrice()
+            commitEstimatedValue()
+        }
     }
 
     private func commitPurchasePrice() {

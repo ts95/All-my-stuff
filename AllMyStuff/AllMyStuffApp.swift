@@ -24,7 +24,6 @@ struct AllMyStuffApp: App {
     var body: some Scene {
         WindowGroup {
             ItemSplitView()
-                .modelContainer(sharedModelContainer)
         }
     }
 }
