@@ -1,6 +1,6 @@
 # All My Stuff
 
-A personal inventory app for tracking what you own, where it's stored, and what it's worth.
+A personal inventory app for tracking what you own, where it's stored, and what it's worth — synced across all your Apple devices via iCloud.
 
 ## Why
 
@@ -18,7 +18,7 @@ Each financial field (`purchasePrice`, `estimatedValue`) supports three states: 
 
 - **SwiftUI** with `NavigationSplitView` for adaptive iOS/iPadOS/Mac layouts
 - **SwiftData** for local persistence with many-to-many relationships between items, categories, and locations
-- **iCloud CloudKit** entitlements configured, but sync not yet enabled in the ModelContainer
+- **iCloud CloudKit** sync via SwiftData's built-in support — same data across all devices signed into the same Apple ID
 - No external dependencies
 
 ## About This Project

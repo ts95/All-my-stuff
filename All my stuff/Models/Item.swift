@@ -7,7 +7,7 @@ final class Item {
     @Attribute(originalName: "name")
     var name: String = ""
     var notes: String = ""
-    var photo: Data?
+    @Attribute(.externalStorage) var photo: Data?
     var purchasePrice: PriceState?
     var estimatedValue: PriceState?
     var datePurchased: Date?
