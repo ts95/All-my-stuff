@@ -1,7 +1,7 @@
 # Database Abstraction Layer — Design Spec
 
 **Date**: 2026-06-21
-**Goal**: Abstract SwiftData away from all SwiftUI views so that Previews work without CloudKit, while maintaining reactivity and query capabilities.
+**Goal**: Abstract SwiftData away from all SwiftUI views so that Previews work without CloudKit, while maintaining reactivity and query capabilities. Use `swift-dependencies` for dependency injection with automatic context detection (`.live`/`.preview`/`.test`).
 
 ---
 
@@ -11,32 +11,34 @@ All six views in the app import `SwiftData` directly through `@Environment(\.mod
 
 ## Decision
 
-**Option A — Generic `@Observable` Store + Environment Keys**: A single generic store class parameterized by entity type, exposed via custom `@Environment` keys. Views depend only on the store protocol — never on SwiftData. Previews inject a mock store with hardcoded data.
+**Option A — `@Observable` Store + swift-dependencies**: Per-entity `@Observable` stores injected via `@Dependency(\.)` from the `swift-dependencies` library. The library auto-detects context: `.live` uses SwiftData+CloudKit, `.preview` uses mock data (no container), `.test` uses deterministic fixtures. Views depend only on the store — never on SwiftData.
 
 ## Architecture
 
 ```
 Views (SwiftUI, no SwiftData import)
   ↓ depends on
-@Observable DataStore<T> + Environment Keys
+@Dependency(\.itemStore), @Dependency(\.categoryStore), @Dependency(\.locationStore)
   ↓ depends on
-DataStoreProtocol<T>
-  ↓ implemented by
-LiveStore<T> (wraps SwiftData) / MockStore<T> (hardcoded data)
-  ↓ depends on
-SwiftData Models (Item, ItemCategory, ItemLocation)
+DependencyValues (swift-dependencies)
+  ↓ resolves to
+ItemStore: DependencyKey (liveValue, previewValue, testValue)
+CategoryStore: DependencyKey
+LocationStore: DependencyKey
+  ↓ liveValue depends on
+SwiftData Models (Item, ItemCategory, ItemLocation) + ModelContext
 ```
 
-`LiveStore` is the only file in the Services layer that imports `SwiftData`.
+The only files importing `SwiftData` in the Services layer are the live implementations registered as `DependencyKey.liveValue`.
 
 ## Core Components
 
-### 1. `DataStoreProtocol<T>`
+### 1. `EntityStoreProtocol<Entity>`
 
 Protocol defining the contract between views and the data layer:
 
 ```swift
-protocol DataStoreProtocol: AnyObject {
+protocol EntityStoreProtocol: Sendable {
     associatedtype Entity: Identifiable & Observable
 
     var items: [Entity] { get }
@@ -52,45 +54,72 @@ protocol DataStoreProtocol: AnyObject {
 }
 ```
 
-### 2. `@Observable DataStore<T>`
+### 2. `@Observable ItemStore` (and `CategoryStore`, `LocationStore`)
 
-Generic observable store holding reactive state:
+Per-entity `@Observable` stores holding reactive state:
 
-- `items: [T]` — current dataset, observed by views
+- `items: [Entity]` — current dataset, observed by views
 - `isLoading: Bool` — loading indicator
 - `error: Error?` — last error
 
 Views observe `store.items` reactively through `@Observable`. No `@Query` needed.
 
-### 3. `LiveStore<T>`
+### 3. `DependencyKey` Conformances
 
-Concrete implementation wrapping `ModelContext`. The **only** file importing `SwiftData` in the Services layer.
-
-- `query(_:)` pushes predicates down to `FetchDescriptor` with `NSPredicate` — efficient server-side filtering
-- Maintains a query registry: when CloudKit syncs or data mutates, registered queries re-evaluate and update reactive state
-- Calls `modelContext.save()` after mutations
-
-### 4. `MockStore<T>`
-
-Returns hardcoded sample data. Zero SwiftData dependency. Used in Previews and unit tests.
-
-- `query(_:)` filters the in-memory array — simple, fast
-- `insert`/`save`/`delete` mutate the in-memory array
-- No async overhead — all operations are synchronous
-
-### 5. Environment Keys
-
-Custom `@Environment` keys per entity type:
+Each store conforms to `DependencyKey` with three context values:
 
 ```swift
-extension EnvironmentValues {
-    var itemsStore: DataStoreProtocol<Item> { ... }
-    var categoriesStore: DataStoreProtocol<ItemCategory> { ... }
-    var locationsStore: DataStoreProtocol<ItemLocation> { ... }
+extension ItemStore: DependencyKey {
+    // Live: wraps SwiftData + CloudKit
+    static let liveValue: ItemStore = {
+        let context = ModelContainer.mainContext
+        return ItemStore(context: context)
+    }()
+
+    // Preview: hardcoded sample data, zero SwiftData
+    static var previewValue: ItemStore {
+        ItemStore.preview()
+    }
+
+    // Test: deterministic empty state
+    static var testValue: ItemStore {
+        ItemStore.test()
+    }
+}
+
+extension DependencyValues {
+    var itemStore: ItemStore {
+        get { self[ItemStore.self] }
+        set { self[ItemStore.self] = newValue }
+    }
 }
 ```
 
-Views access stores via `@Environment(\.itemsStore)`.
+Same pattern for `CategoryStore` and `LocationStore`.
+
+### 4. Live Implementation
+
+The live store wraps `ModelContext`. The **only** code importing `SwiftData` in the Services layer.
+
+- `query(_:)` pushes predicates down to `FetchDescriptor` with `NSPredicate` — efficient server-side filtering
+- Registers for `ModelContext` change notifications; on CloudKit sync, refreshes `items` and re-evaluates registered queries
+- Calls `modelContext.save()` after mutations
+
+### 5. Preview Implementation
+
+Returns hardcoded sample data. Zero SwiftData dependency. Used automatically in Xcode Previews via `previewValue`.
+
+- `query(_:)` filters the in-memory array — simple, fast
+- `insert`/`save`/`delete` mutate the in-memory array
+- No async overhead — all operations complete immediately
+- Sample data includes items with categories, locations, and prices for realistic previews
+
+### 6. Test Implementation
+
+Deterministic empty state. Used automatically in Swift Testing via `testValue`.
+
+- All queries return empty arrays by default
+- Tests override with `withDependencies { $0.itemStore = ... }` when needed
 
 ## Query Model
 
@@ -100,12 +129,12 @@ Views access stores via `@Environment(\.itemsStore)`.
 // View calls:
 let electronics = await store.query { $0.categories.contains("Electronics") }
 
-// LiveStore translates to:
+// Live store translates to:
 let desc = FetchDescriptor<Item>(predicate: NSPredicate(...))
 return try context.fetch(desc)
 ```
 
-### Mock Store — In-Memory Filter
+### Preview/Test Store — In-Memory Filter
 
 ```swift
 func query(_ predicate: @escaping (Entity) -> Bool) -> [Entity] {
@@ -132,8 +161,8 @@ View → @Query → SwiftData directly
 
 **After:**
 ```
-View → @Environment(\.itemsStore) → DataStore<Item>
-  → .items (reactive array)
+View → @Dependency(\.itemStore) → ItemStore
+  → .items (reactive array, via @Observable)
   → .query { ... } (filtered reactive results)
   → .save() / .delete() (async mutations)
 ```
@@ -141,17 +170,28 @@ View → @Environment(\.itemsStore) → DataStore<Item>
 ### Reactivity
 
 - Views observe `store.items` — updates propagate through `@Observable`
-- `LiveStore` registers for `ModelContext` change notifications; on CloudKit sync, it refreshes `items` and re-evaluates registered queries
-- `MockStore` mutations update the in-memory array immediately
+- Live store registers for `ModelContext` change notifications; on CloudKit sync, it refreshes `items` and re-evaluates registered queries
+- Preview/test store mutations update the in-memory array immediately
+
+### Context Auto-Detection
+
+The `swift-dependencies` library detects context automatically:
+
+| Context | Trigger | Store Used |
+|---------|---------|------------|
+| `.live` | Normal app run (simulator/device) | SwiftData + CloudKit |
+| `.preview` | Xcode Previews (`XCODE_RUNNING_FOR_PREVIEWS=1`) | Mock data, no container |
+| `.test` | Swift Testing / XCTest runs | Deterministic fixtures |
+
+No manual wiring needed. Previews just work.
 
 ### Previews
 
 ```swift
 #Preview {
     ContentView()
-        .environment(\.itemsStore, MockItemStore())
-        .environment(\.categoriesStore, MockCategoryStore())
-        .environment(\.locationsStore, MockLocationStore())
+    // No .environment(), no .modelContainer(), no container setup
+    // swift-dependencies auto-resolves to previewValue
 }
 ```
 
@@ -160,45 +200,61 @@ No container setup. No async initialization. Instant preview.
 ## Migration Plan
 
 ### Phase 1: Foundation
-1. Create `DataStoreProtocol<T>`
-2. Create `LiveStore<T>` wrapping SwiftData
-3. Create `MockStore<T>` with sample data
-4. Create environment keys for each entity type
+1. Create `EntityStoreProtocol<Entity>` protocol
+2. Create `ItemStore` with `DependencyKey` conformance (live + preview + test values)
+3. Create `CategoryStore` with `DependencyKey` conformance
+4. Create `LocationStore` with `DependencyKey` conformance
+5. Register all stores in `DependencyValues` extensions
+6. Call `prepareDependencies` in `All_my_stuffApp.init()` to initialize live stores
 
 ### Phase 2: View Migration
-5. Migrate `ItemListView` — replace `@Query` with `store.items` and `store.query`
-6. Migrate `ContentView` — replace `modelContext.insert()` with `store.insert()`
-7. Migrate `ItemFormSheet` — replace `modelContext.save()` with `store.save()`
-8. Migrate `ItemProfileView` — replace `modelContext.delete()` with `store.delete()`
-9. Migrate `CategoryPickerView` — replace `@Query` and `modelContext.insert()`
-10. Migrate `LocationPickerView` — replace `@Query` and `modelContext.insert()`
+7. Migrate `ItemListView` — replace `@Query` with `@Dependency(\.itemStore)` and `store.items`
+8. Migrate `ContentView` — replace `modelContext.insert()` with `store.insert()`
+9. Migrate `ItemFormSheet` — replace `modelContext.save()` with `store.save()`
+10. Migrate `ItemProfileView` — replace `modelContext.delete()` with `store.delete()`
+11. Migrate `CategoryPickerView` — replace `@Query` and `modelContext.insert()` with store
+12. Migrate `LocationPickerView` — replace `@Query` and `modelContext.insert()` with store
 
 ### Phase 3: Cleanup
-11. Remove `import SwiftData` from all view files
-12. Update `PreviewHelper.swift` to use mock stores
-13. Update tests to inject mock stores where appropriate
-14. Update `AGENTS.md` with new conventions
+13. Remove `import SwiftData` from all view files
+14. Update `PreviewHelper.swift` — remove in-memory container helpers, previews use `previewValue` automatically
+15. Update tests to use `withDependencies` for store overrides
+16. Update `AGENTS.md` with new conventions
 
 ## Testing Strategy
 
-- **Unit tests**: `MockStore` provides deterministic data — no container setup needed
-- **Integration tests**: `LiveStore` with in-memory container verifies SwiftData operations
-- **View previews**: Mock stores, instant load, no CloudKit dependency
+- **Unit tests**: `testValue` provides deterministic state. Override with `withDependencies { $0.itemStore = ... }` for specific scenarios. No container setup.
+- **Integration tests**: Override with `liveValue` using in-memory `ModelContainer` to verify SwiftData operations.
+- **View previews**: `previewValue` provides sample data automatically. Zero setup code.
+
+```swift
+@Test func deleteItemRemovesFromStore() async throws {
+    await withDependencies {
+        $0.itemStore = ItemStore.preview() // or custom test fixture
+    } operation: {
+        let store = Dependency(\.itemStore).wrappedValue
+        try await store.delete(store.items[0])
+        #expect(store.items.count == 0)
+    }
+}
+```
 
 ## Files Affected
 
 | File | Change |
 |------|--------|
-| `Services/DataStoreProtocol.swift` | New — protocol definition |
-| `Services/DataStore.swift` | New — generic `@Observable` store |
-| `Services/LiveStore.swift` | New — SwiftData-backed implementation |
-| `Services/MockStore.swift` | New — mock implementation for previews |
-| `Services/EnvironmentKeys.swift` | New — `@Environment` key extensions |
-| `Views/ContentView.swift` | Replace `modelContext` with store |
-| `Views/ItemListView.swift` | Replace `@Query` with store |
-| `Views/ItemFormSheet.swift` | Replace `modelContext` with store |
-| `Views/ItemProfileView.swift` | Replace `modelContext` with store |
-| `Views/CategoryPickerView.swift` | Replace `@Query` + `modelContext` with store |
-| `Views/LocationPickerView.swift` | Replace `@Query` + `modelContext` with store |
-| `Services/PreviewHelper.swift` | Update to use mock stores |
+| `Services/EntityStoreProtocol.swift` | New — protocol definition |
+| `Services/ItemStore.swift` | New — `@Observable` store + `DependencyKey` conformance |
+| `Services/CategoryStore.swift` | New — `@Observable` store + `DependencyKey` conformance |
+| `Services/LocationStore.swift` | New — `@Observable` store + `DependencyKey` conformance |
+| `Services/DependencyRegistration.swift` | New — `DependencyValues` extensions + `prepareDependencies` |
+| `All my stuff/All_my_stuffApp.swift` | Add `prepareDependencies` in `init()` |
+| `Views/ContentView.swift` | Replace `modelContext` with `@Dependency(\.itemStore)` |
+| `Views/ItemListView.swift` | Replace `@Query` with `@Dependency(\.itemStore)` |
+| `Views/ItemFormSheet.swift` | Replace `modelContext` with `@Dependency(\.itemStore)` |
+| `Views/ItemProfileView.swift` | Replace `modelContext` with `@Dependency(\.itemStore)` |
+| `Views/CategoryPickerView.swift` | Replace `@Query` + `modelContext` with `@Dependency` |
+| `Views/LocationPickerView.swift` | Replace `@Query` + `modelContext` with `@Dependency` |
+| `Services/PreviewHelper.swift` | Remove in-memory container helpers |
+| `All my stuffTests/` | Update tests to use `withDependencies` |
 | `AGENTS.md` | Add new conventions |
